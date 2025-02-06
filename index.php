@@ -1,14 +1,15 @@
 <?php
 session_start();
 
-$errors = [];
 $fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'blk', 'street', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip'];
 
 $countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "India", "Japan", "China", "Philippines"];
 
+$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+$errors = [];
 
 if (!isset($_SESSION['form_data'])) {
     $_SESSION['form_data'] = [];
@@ -34,10 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $field = $name_fields[$i];
         if (empty($$field) || preg_match("/^\s+$/", $$field)) {
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required and cannot contain only spaces.";
-        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $$field)) {
+        } elseif ($field == 'middle_name' && !preg_match("/^[a-zA-Z\.]*$/", $$field)) { // Allow period for middle initial
+            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and a period (for middle initial).";
+        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $$field)) { // Reject numbers for other name fields
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and spaces.";
         }
     }
+
 
     // General Text Fields Validation (Ensuring No Spaces Only Input)
     $text_fields = ['nationality', 'religion', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province'];
@@ -136,6 +140,7 @@ $barangay = $form_data['barangay'] ?? '';
 $city = $form_data['city'] ?? '';
 $province = $form_data['province'] ?? '';
 $country = $form_data['country'] ?? '';
+$country2 = $form_data['country2'] ?? '';
 $zip = $form_data['zip'] ?? '';
 $unit2 = $form_data['unit2'] ?? '';
 $blk2 = $form_data['blk2'] ?? '';
@@ -149,7 +154,7 @@ $email2 = $form_data['email2'] ?? '';
 $tele = $form_data['tele'] ?? '';
 ?>
 
-<select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+<select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>" style="display: none;">
     <?php for ($i = 0; $i < count($countries); $i++) { ?>
         <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
             <?php echo $countries[$i]; ?>
@@ -186,6 +191,7 @@ $tele = $form_data['tele'] ?? '';
                             <input type="text" name="last_name" id="lastname" class="<?php echo isset($errors['last_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($last_name); ?>">
                             <span class="error"><?php echo isset($errors['last_name']) ? $errors['last_name'] : ''; ?></span>
                         </div>
+
                         <div>
                             <label for="firstname">First Name</label>
                             <input type="text" name="first_name" id="firstname" class="<?php echo isset($errors['first_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($first_name); ?>">
@@ -302,15 +308,15 @@ $tele = $form_data['tele'] ?? '';
                         </div>
 
                         <div>
-                            <label for="country">Country</label>
-                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+                            <label for="country2">Country</label>
+                            <select name="country2" id="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?>">
                                 <?php for ($i = 0; $i < count($countries); $i++) { ?>
                                     <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
                                         <?php echo $countries[$i]; ?>
                                     </option>
                                 <?php } ?>
                             </select>
-                            <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+                            <span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
                         </div>
 
                         <div>
@@ -367,12 +373,16 @@ $tele = $form_data['tele'] ?? '';
 
                         <div>
                             <label for="country">Country</label>
-                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?>">
-                                <?php foreach ($countries as $c) { ?>
+                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+                                <?php for ($i = 0; $i < count($countries); $i++) { ?>
+                                    <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
+                                        <?php echo $countries[$i]; ?>
+                                    </option>
                                 <?php } ?>
                             </select>
                             <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
                         </div>
+
                         <div>
                             <label for="zip">Zip Code</label>
                             <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
@@ -438,6 +448,7 @@ $tele = $form_data['tele'] ?? '';
                 </div>
 
                 <div class="btn"><button type="submit" class="done">Proceed</button></div>
+
             </section>
         </form>
     </section>
