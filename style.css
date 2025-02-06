@@ -18,17 +18,16 @@ body {
 
 .main {
     width: 1500px;
-    height: 700px;
+    height: 800px;
     padding: 50px;
     border-radius: 20px;
     background: white;
-    margin: 45px 0 0 2px; 
     position: relative;
 }
 
 .label1 {
     text-align: center;
-    margin: 40px 0 20px 0;;;
+    margin: 30px 0 50px 0;;;
 }
 
 .wrapper {
@@ -122,6 +121,11 @@ body {
     border: 1px solid #ccc;
     background-color: #eeeeee;
 }
+
+.hide-country {
+    display: none;
+}
+
 /* END OF PAGE 2 */
 
 /* PAGE 3 */
@@ -232,8 +236,7 @@ input[type=radio] {
     width: 150px;
     padding: 5px;
     position: fixed;
-    bottom: 90px;
-    left: 1625px;
+    margin: 80px 0 0 1120px;
 }
 
 .done {

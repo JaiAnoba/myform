@@ -1,104 +1,164 @@
 <?php
-// Initialize variables
+session_start();
+
 $errors = [];
-$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = "";
+$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'blk', 'street', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip'];
 
-// Process form data if POST request is made
+$countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "India", "Japan", "China", "Philippines"];
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+
+if (!isset($_SESSION['form_data'])) {
+    $_SESSION['form_data'] = [];
+}
+
+$form_data = $_SESSION['form_data'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validate fields
-    $last_name = trim($_POST['last_name'] ?? '');
-    if (empty($last_name)) {
-        $errors['last_name'] = "Last Name is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^[a-zA-Z\s]*$/", $last_name)) {
-        $errors['last_name'] = "Last Name must not contain numbers or special characters.";
+    $_SESSION['form_data'] = $_POST;
+
+    // Loop through each field and perform validation using a for loop
+    for ($i = 0; $i < count($fields); $i++) {
+        $field = $fields[$i];
+        $$field = trim($_POST[$field] ?? '');
+        if (empty($$field)) {
+            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required.";
+        }
     }
 
-    $first_name = trim($_POST['first_name'] ?? '');
-    if (empty($first_name)) {
-        $errors['first_name'] = "First Name is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^[a-zA-Z\s]*$/", $first_name)) {
-        $errors['first_name'] = "First Name must not contain numbers or special characters.";
+    // Name Validations
+    $name_fields = ['last_name', 'first_name', 'middle_name', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
+    for ($i = 0; $i < count($name_fields); $i++) {
+        $field = $name_fields[$i];
+        if (empty($$field) || preg_match("/^\s+$/", $$field)) {
+            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required and cannot contain only spaces.";
+        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $$field)) {
+            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and spaces.";
+        }
     }
 
-    $middle_name = trim($_POST['middle_name'] ?? '');
-    if (empty($middle_name)) {
-        $errors['middle_name'] = "Middle Initial is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^[a-zA-Z\s\.]*$/", $middle_name)) {
-        $errors['middle_name'] = "Middle Initial must not contain numbers or special characters.";
+    // General Text Fields Validation (Ensuring No Spaces Only Input)
+    $text_fields = ['nationality', 'religion', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province'];
+    for ($i = 0; $i < count($text_fields); $i++) {
+        $field = $text_fields[$i];
+        if (empty($$field) || preg_match("/^\s+$/", $$field)) {
+            $errors[$field] = ucfirst($field) . " is required and cannot contain only spaces.";
+        }
     }
 
-    $dob = $_POST['dob'] ?? '';
+    // Date of Birth Validation
     if (empty($dob)) {
         $errors['dob'] = "Date of Birth is required.";
     } elseif (strtotime($dob) > strtotime('-18 years')) {
         $errors['dob'] = "You must be at least 18 years old.";
     }
 
-    $gender = $_POST['gender'] ?? '';
+    // Gender Validation
     if (empty($gender)) {
         $errors['gender'] = "Gender is required.";
     }
 
-    $civil_status = trim($_POST['civil_status'] ?? '');
+    // Civil Status Validation
     if (empty($civil_status)) {
         $errors['civil_status'] = "Civil Status is required.";
     }
 
-    $nationality = trim($_POST['nationality'] ?? '');
-    if (empty($nationality)) {
-        $errors['nationality'] = "Nationality is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^[a-zA-Z\s]*$/", $nationality)) {
-        $errors['nationality'] = "Nationality must not contain numbers or special characters.";
+    // TIN Validation
+    if (empty($tin) || preg_match("/^\s+$/", $tin)) {
+        $errors['tin'] = "Tax Identification No. is required and cannot contain only spaces.";
+    } elseif (!preg_match("/^[0-9]{9,15}$/", $tin)) {
+        $errors['tin'] = "Tax Identification No. must contain only numbers (9-15 digits).";
     }
 
-    $religion = trim($_POST['religion'] ?? '');
-    if (empty($religion)) {
-        $errors['religion'] = "Religion is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^[a-zA-Z\s]*$/", $religion)) {
-        $errors['religion'] = "Religion must not contain numbers or special characters.";
+    // Zip Code Validation
+    if (empty($zip) || preg_match("/^\s+$/", $zip)) {
+        $errors['zip'] = "Zip Code is required and cannot contain only spaces.";
+    } elseif (!preg_match("/^[0-9]{4,6}$/", $zip)) {
+        $errors['zip'] = "Zip Code must contain only 4-6 digits.";
     }
 
-    $tin = trim($_POST['tin'] ?? '');
-    if (empty($tin)) {
-        $errors['tin'] = "Tax Identification No. is required and cannot be empty or spaces.";
-    } elseif (!preg_match("/^\d+$/", $tin)) {
-        $errors['tin'] = "Tax Identification No. must only contain numbers.";
+    // Phone Validation
+    if (empty($phone) || preg_match("/^\s+$/", $phone)) {
+        $errors['phone'] = "Phone No. is required and cannot contain only spaces.";
+    } elseif (!preg_match("/^[0-9]{10,15}$/", $phone)) {
+        $errors['phone'] = "Phone No. must contain only 10-15 digits.";
     }
 
-    $unit = trim($_POST['unit'] ?? '');
-    $blk = trim($_POST['blk'] ?? '');
-    $street = trim($_POST['street'] ?? '');
-
-    $phone = trim($_POST['phone'] ?? '');
-    if (empty($phone)) {
-        $errors['phone'] = "Phone No. is required and cannot be empty or spaces.";
-    }
-
-    $email = trim($_POST['email'] ?? '');
-    if (empty($email)) {
-        $errors['email'] = "E-mail Address is required and cannot be empty or spaces.";
+    // Email Validation
+    if (empty($email) || preg_match("/^\s+$/", $email)) {
+        $errors['email'] = "E-mail Address is required and cannot contain only spaces.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "Invalid email format.";
     }
 
-    // Parental information
-    $flast = trim($_POST['flast'] ?? '');
-    $ffirst = trim($_POST['ffirst'] ?? '');
-    $fmiddle = trim($_POST['fmiddle'] ?? '');
-    $mlast = trim($_POST['mlast'] ?? '');
-    $mfirst = trim($_POST['mfirst'] ?? '');
-    $mmiddle = trim($_POST['mmiddle'] ?? '');
+    $_SESSION['errors'] = $errors;
 
-    // If there are errors, display them
     if (empty($errors)) {
-        // Redirect to the next page
-        if (isset($_POST['next_page'])) {
-            header("Location: next_page.php");
+        if ($page < 4) {
+            header("Location: ?page=" . ($page + 1));
+            exit();
+        } else {
+            echo "Form completed!";
             exit();
         }
     }
 }
+
+
+$form_data = $_SESSION['form_data'] ?? [];
+$errors = $_SESSION['errors'] ?? [];
+
+// Form fields values
+$last_name = $form_data['last_name'] ?? '';
+$first_name = $form_data['first_name'] ?? '';
+$middle_name = $form_data['middle_name'] ?? '';
+$dob = $form_data['dob'] ?? '';
+$gender = $form_data['gender'] ?? '';
+$civil_status = $form_data['civil_status'] ?? '';
+$nationality = $form_data['nationality'] ?? '';
+$religion = $form_data['religion'] ?? '';
+$tin = $form_data['tin'] ?? '';
+$unit = $form_data['unit'] ?? '';
+$blk = $form_data['blk'] ?? '';
+$street = $form_data['street'] ?? '';
+$phone = $form_data['phone'] ?? '';
+$email = $form_data['email'] ?? '';
+$flast = $form_data['flast'] ?? '';
+$ffirst = $form_data['ffirst'] ?? '';
+$fmiddle = $form_data['fmiddle'] ?? '';
+$mlast = $form_data['mlast'] ?? '';
+$mfirst = $form_data['mfirst'] ?? '';
+$mmiddle = $form_data['mmiddle'] ?? '';
+$subdivision = $form_data['subdivision'] ?? '';
+$barangay = $form_data['barangay'] ?? '';
+$city = $form_data['city'] ?? '';
+$province = $form_data['province'] ?? '';
+$country = $form_data['country'] ?? '';
+$zip = $form_data['zip'] ?? '';
+$unit2 = $form_data['unit2'] ?? '';
+$blk2 = $form_data['blk2'] ?? '';
+$street2 = $form_data['street2'] ?? '';
+$subdivision2 = $form_data['subdivision2'] ?? '';
+$barangay2 = $form_data['barangay2'] ?? '';
+$city2 = $form_data['city2'] ?? '';
+$province2 = $form_data['province2'] ?? '';
+$phone2 = $form_data['phone2'] ?? '';
+$email2 = $form_data['email2'] ?? '';
+$tele = $form_data['tele'] ?? '';
 ?>
+
+<select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+    <?php for ($i = 0; $i < count($countries); $i++) { ?>
+        <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
+            <?php echo $countries[$i]; ?>
+        </option>
+    <?php } ?>
+</select>
+<span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,29 +168,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Form</title>
-    <script>
-        function toggleCivilStatusField() {
-            const civilStatusSelect = document.querySelector('select[name="civil_status"]');
-            const othersInput = document.getElementById('othersInput');
 
-            if (civilStatusSelect.value === 'Others') {
-                othersInput.style.display = 'block';
-                civilStatusSelect.style.display = 'none';
-            } else {
-                othersInput.style.display = 'none';
-                civilStatusSelect.style.display = 'block';
-            }
-        }
-    </script>
 </head>
 
 <body>
     <section class="main">
         <h1 class="label1"> Personal Data </h1>
-        <form method="POST" action="">
-            <section class="wrapper">
+        <form method="POST" action="?page=<?php echo $page; ?>">
+            <section class="wrapper" id="pageContainer" data-page="<?php echo $page; ?>">
                 <!-- Page 1 -->
-                <div class="page1">
+                <div class="page1" style="display: <?php echo ($page == 1) ? 'block' : 'none'; ?>">
                     <p class="sublabel1"> Personal Information </p>
 
                     <div class="row1">
@@ -212,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <!-- Page 2 -->
-                <div class="page2">
+                <div class="page2" style="display: <?php echo ($page == 2) ? 'block' : 'none'; ?>">
                     <p class="sublabel2"> Place of Birth </p>
                     <div class="place-grid">
                         <div>
@@ -230,11 +277,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="street" class="<?php echo isset($errors['street']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street); ?>">
                             <span class="error"><?php echo isset($errors['street']) ? $errors['street'] : ''; ?></span>
                         </div>
+                        <div>
+                            <label for="subdivision">Subdivision</label>
+                            <input type="text" name="subdivision" class="<?php echo isset($errors['subdivision']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
+                            <span class="error"><?php echo isset($errors['subdivision']) ? $errors['subdivision'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="barangay">Barangay/District/Locality</label>
+                            <input type="text" name="barangay" class="<?php echo isset($errors['barangay']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
+                            <span class="error"><?php echo isset($errors['barangay']) ? $errors['barangay'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="city">City/Municipality</label>
+                            <input type="text" name="city" class="<?php echo isset($errors['city']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
+                            <span class="error"><?php echo isset($errors['city']) ? $errors['city'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="province">Province</label>
+                            <input type="text" name="province" class="<?php echo isset($errors['province']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
+                            <span class="error"><?php echo isset($errors['province']) ? $errors['province'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="country">Country</label>
+                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+                                <?php for ($i = 0; $i < count($countries); $i++) { ?>
+                                    <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
+                                        <?php echo $countries[$i]; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="zip">Zip Code</label>
+                            <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
+                            <span class="error"><?php echo isset($errors['zip']) ? $errors['zip'] : ''; ?></span>
+                        </div>
+
                     </div>
                 </div>
 
                 <!-- Page 3 -->
-                <div class="page3">
+                <div class="page3" style="display: <?php echo ($page == 3) ? 'block' : 'none'; ?>">
                     <p class="sublabel3"> Home Address </p>
                     <div class="address-grid">
                         <div>
@@ -253,6 +342,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <span class="error"><?php echo isset($errors['street2']) ? $errors['street2'] : ''; ?></span>
                         </div>
                         <div>
+                            <label for="subdivision">Subdivision</label>
+                            <input type="text" name="subdivision" class="<?php echo isset($errors['subdivision']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
+                            <span class="error"><?php echo isset($errors['subdivision']) ? $errors['subdivision'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="barangay">Barangay/District/Locality</label>
+                            <input type="text" name="barangay" class="<?php echo isset($errors['barangay']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
+                            <span class="error"><?php echo isset($errors['barangay']) ? $errors['barangay'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="city">City/Municipality</label>
+                            <input type="text" name="city" class="<?php echo isset($errors['city']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
+                            <span class="error"><?php echo isset($errors['city']) ? $errors['city'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="province">Province</label>
+                            <input type="text" name="province" class="<?php echo isset($errors['province']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
+                            <span class="error"><?php echo isset($errors['province']) ? $errors['province'] : ''; ?></span>
+                        </div>
+
+                        <div>
+                            <label for="country">Country</label>
+                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?>">
+                                <?php foreach ($countries as $c) { ?>
+                                <?php } ?>
+                            </select>
+                            <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+                        </div>
+                        <div>
+                            <label for="zip">Zip Code</label>
+                            <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
+                            <span class="error"><?php echo isset($errors['zip']) ? $errors['zip'] : ''; ?></span>
+                        </div>
+
+                        <div>
                             <label for="phone">Phone No.</label>
                             <input type="text" name="phone" class="<?php echo isset($errors['phone']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($phone); ?>">
                             <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
@@ -262,11 +389,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="email" class="<?php echo isset($errors['email']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($email); ?>">
                             <span class="error"><?php echo isset($errors['email']) ? $errors['email'] : ''; ?></span>
                         </div>
+                        <div>
+                            <label for="tele">Telephone</label>
+                            <input type="text" name="phone" class="<?php echo isset($errors['phone']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($phone); ?>">
+                            <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Page 4 -->
-                <div class="page4">
+                <div class="page4" style="display: <?php echo ($page == 4) ? 'block' : 'none'; ?>">
                     <p class="sublabel4"> Parental Information </p>
                     <div class="parent-grid">
                         <p class="section-label">Father's Name</p>
@@ -309,6 +441,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </section>
         </form>
     </section>
+
+    <script src="main.js"></script>
 
 </body>
 
