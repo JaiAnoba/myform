@@ -223,17 +223,20 @@ $tele = $form_data['tele'] ?? '';
                         </div>
 
                         <!-- Civil Status -->
-                        <div>
+                        <div class="status-container">
                             <label id="civilStatusLabel">Civil Status</label>
-                            <select name="civil_status" class="<?php echo isset($errors['civil_status']) ? 'error' : ''; ?>" onchange="toggleCivilStatusField()">
-                                <option>Single</option>
-                                <option>Married</option>
-                                <option>Widowed</option>
-                                <option>Legally Separated</option>
-                                <option>Others</option>
+
+                            <select id="civilStatus" name="civil_status" class="<?php echo isset($errors['civil_status']) ? 'error' : ''; ?>">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Widowed">Widowed</option>
+                                <option value="Legally Separated">Legally Separated</option>
+                                <option value="Others">Others</option>
                             </select>
-                            <span class="error"><?php echo isset($errors['civil_status']) ? $errors['civil_status'] : ''; ?></span>
+
+                            <input type="text" id="otherStatus" name="otherStatus" placeholder="Enter your civil status">
                         </div>
+
 
                         <div id="othersInput" style="display:none;">
                             <label for="others">Please specify:</label>
