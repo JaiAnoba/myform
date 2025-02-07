@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'blk', 'street', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip'];
+$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip'];
 
 $countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "India", "Japan", "China", "Philippines"];
 
-$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street = $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
 $inputNames = ['nationality', 'religion'];
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -116,6 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['email'] = "Invalid email format.";
     }
 
+
+    if ($page != 4) {
+        header("Location: ?page=" . ($page + 1));
+        exit();
+    }
+
+
     $_SESSION['errors'] = $errors;
 
     if (empty($errors)) {
@@ -130,8 +137,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-$form_data = $_SESSION['form_data'] ?? [];
 $errors = $_SESSION['errors'] ?? [];
+$form_data = $_SESSION['form_data'] ?? [];
 
 // Form fields values
 $last_name = $form_data['last_name'] ?? '';
@@ -470,11 +477,121 @@ $tele = $form_data['tele'] ?? '';
                     </div>
                 </div>
 
-                <div class="btn"><button type="submit" class="done">Proceed</button></div>
+                <div class="btn"><button type="submit" class="next">Proceed</button></div>
+                <div class="btn1"><button type="submit" class="done">Submit</button></div>
 
             </section>
         </form>
     </section>
+    
+    <section class="output_display">
+        <h2>Personal Data</h2>
+        <div class="section">
+            <h3>Personal Details</h3>
+            <div class="field-container">
+                <label>Name:</label>
+                <p class="o_name"></p>
+            </div>
+            <div class="field-container">
+                <label>Age:</label>
+                <p class="o_age"></p>
+                <label>Civil Status:</label>
+                <p class="o_status"></p>
+            </div>
+            <div class="field-container">
+                <label>Nationality:</label>
+                <p class="o_nationality"></p>
+                <label>Religion:</label>
+                <p class="o_religion"></p>
+            </div>
+            <div class="field-container">
+                <label>Tax Identification No.:</label>
+                <p class="o_tin"></p>
+                <label>E-mail Address:</label>
+                <p class="o_email"></p>
+            </div>
+            <div class="field-container">
+                <label>Phone No.:</label>
+                <p class="o_phone"></p>
+                <label>Telephone:</label>
+                <p class="o_tele"></p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Place of Birth</h3>
+            <div class="field-container">
+                <label>Country:</label>
+                <p class="o_country"></p>
+                <label>Province:</label>
+                <p class="o_province"></p>
+            </div>
+            <div class="field-container">
+                <label>City/Municipality:</label>
+                <p class="o_city"></p>
+                <label>Barangay/District/Locality:</label>
+                <p class="o_barangay"></p>
+            </div>
+            <div class="field-container">
+                <label>Subdivision:</label>
+                <p class="o_subdivision"></p>
+                <label>House/Lot & Blk. No.:</label>
+                <p class="o_blk"></p>
+            </div>
+            <div class="field-container">
+                <label>RM/FLR/Unit No. & Bldg. Name:</label>
+                <p class="o_unit"></p>
+                <label>Street Name:</label>
+                <p class="o_street"></p>
+            </div>
+            <div class="field-container">
+                <label>Zip Code:</label>
+                <p class="o_zip"></p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Home Address</h3>
+            <div class="field-container">
+                <label>Country:</label>
+                <p class="o_country1"></p>
+                <label>Province:</label>
+                <p class="o_province1"></p>
+            </div>
+            <div class="field-container">
+                <label>City/Municipality:</label>
+                <p class="o_city1"></p>
+                <label>Barangay/District/Locality:</label>
+                <p class="o_barangay1"></p>
+            </div>
+            <div class="field-container">
+                <label>Subdivision:</label>
+                <p class="o_subdivision1"></p>
+                <label>House/Lot & Blk. No.:</label>
+                <p class="o_blk1"></p>
+            </div>
+            <div class="field-container">
+                <label>RM/FLR/Unit No. & Bldg. Name:</label>
+                <p class="o_unit1"></p>
+                <label>Street Name:</label>
+                <p class="o_street1"></p>
+            </div>
+            <div class="field-container">
+                <label>Zip Code:</label>
+                <p class="o_zip1"></p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Parental Information</h3>
+            <div class="field-container">
+                <label>Father's Name:</label>
+                <p class="o_fname"></p>
+            </div>
+            <div class="field-container">
+                <label>Mother's Name:</label>
+                <p class="o_mname"></p>
+            </div>
+        </div>
+    </section>
+
 
     <script src="main.js"></script>
 
