@@ -19,14 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Handle form submission
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+    function validatePage() {
+        let isValid = true;
+        const inputs = document.querySelectorAll(`.page${currentPage} input, .page${currentPage} select`);
 
-        // Allow navigation through pages even if there are errors
+        inputs.forEach(input => {
+            if (input.value.trim() === "") {
+                isValid = false;
+                input.classList.add("error"); // Add red border for error styling
+            } else {
+                input.classList.remove("error");
+            }
+        });
+
+        return isValid;
+    }
+
+    doneButton.addEventListener('click', (event) => {
         if (currentPage < 4) {
             window.location.href = `index.php?page=${currentPage + 1}`;
         } else {
-            form.submit();  
+            form.submit();
         }
     });
 

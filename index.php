@@ -6,6 +6,7 @@ $fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_sta
 $countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "India", "Japan", "China", "Philippines"];
 
 $last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+$inputNames = ['nationality', 'religion'];
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -42,6 +43,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    // RELIGION AND NATIONALTY
+    for ($j = 0; $j < count($inputNames); $j++) {
+        if (!empty($_POST[$inputNames[$j]])) {
+            $value = trim($_POST[$inputNames[$j]]);
+            $isValid = true;
+
+            for ($k = 0; $k < strlen($value); $k++) {
+                if (is_numeric($value[$k])) {
+                    $isValid = false;
+                    break;
+                }
+            }
+
+            if (!$isValid || ctype_space($value)) {
+                $errors[$inputNames[$j]] = ucfirst($inputNames[$j]) . " must contain only letters.";
+            }
+        }
+    }
 
     // General Text Fields Validation (Ensuring No Spaces Only Input)
     $text_fields = ['nationality', 'religion', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province'];
