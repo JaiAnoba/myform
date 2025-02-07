@@ -26,27 +26,42 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentPage < 4) {
             window.location.href = `index.php?page=${currentPage + 1}`;
         } else {
-            form.submit();  // On last page, submit the form
+            form.submit();  
         }
     });
 
-    // Hide output section if errors exist
-    let outputSection = document.getElementById("display-container");
-    if (outputSection && outputSection.getAttribute("data-show") !== "true") {
-        outputSection.style.display = "none";
-    }
-
     // Civil Status Toggle Logic
     if (civilStatusSelect && otherStatusInput) {
-        // Initially hide the text field
         otherStatusInput.style.display = 'none';
 
         civilStatusSelect.addEventListener('change', () => {
             if (civilStatusSelect.value === 'Others') {
-                civilStatusSelect.style.display = 'none';  // Hide select field
-                otherStatusInput.style.display = 'inline-block';  // Show text field
-                otherStatusInput.focus();  // Focus on text field
+                civilStatusSelect.style.display = 'none'; 
+                otherStatusInput.style.display = 'inline-block';  
+                otherStatusInput.focus(); 
             }
         });
     }
+
+    // Create the back arrow
+    const backArrow = document.createElement('i');
+    backArrow.className = 'bx bx-arrow-back back-arrow';
+
+    // Append it inside .main
+    const mainContainer = document.querySelector('.main');
+    if (mainContainer) {
+        mainContainer.appendChild(backArrow);
+    }
+
+    // Hide the arrow if on the first page
+    if (currentPage === 1) {
+        backArrow.style.display = 'none';
+    }
+
+    // Functionality to go back
+    backArrow.addEventListener('click', () => {
+        if (currentPage > 1) {
+            window.location.href = `index.php?page=${currentPage - 1}`;
+        }
+    });
 });
