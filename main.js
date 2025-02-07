@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('.next');
     const civilStatusSelect = document.getElementById('civilStatus');
     const otherStatusInput = document.getElementById('otherStatus');
-    const outputDisplays = document.querySelectorAll('.output_display');
-    const mainSection = document.querySelector('.main');
 
     // Show the current page only
     for (let i = 1; i <= 4; i++) {
@@ -16,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Show or hide the .done button and .next button based on the current page
     if (currentPage === 4) {
         doneButton.style.display = 'block';
         nextButton.style.display = 'none';
@@ -25,8 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.style.display = 'block';
     }
 
+    doneButton.addEventListener('click', (event) => {
+        if (currentPage === 4) {
+            // Submit the form when on page 4
+            event.preventDefault(); 
+
+            const mainContainer = document.querySelector('.main');
+            const outputDisplay = document.querySelector('.OUTPUT_DISPLAY');
+            
+            if (mainContainer) {
+                mainContainer.style.display = 'none'; 
+            }
+
+            if (outputDisplay) {
+                outputDisplay.style.display = 'block'; 
+            }
+        }
+    });
+
     nextButton.addEventListener('click', (event) => {
-        // If the page has validation errors, allow navigation, but show errors
         if (validatePage() || currentPage === 4) {
             window.location.href = `index.php?page=${currentPage + 1}`;
         } else {
@@ -68,20 +82,4 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `index.php?page=${currentPage - 1}`;
         }
     });
-
-    // Initially hide all .output_display elements
-    outputDisplays.forEach(display => {
-        display.style.display = 'none';
-    });
-
-    // Show .output_display elements when the done button is clicked
-    if (doneButton) {
-        doneButton.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            mainSection.style.display = 'none'; 
-            outputDisplays.forEach(display => {
-                display.style.display = 'block'; 
-            });
-        });
-    }
 });

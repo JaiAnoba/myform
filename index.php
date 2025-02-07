@@ -1,11 +1,14 @@
 <?php
 session_start();
 
-$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip'];
+$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2'];
 
 $countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "India", "Japan", "China", "Philippines"];
 
-$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street = $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $zip = '';
+$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street =
+    $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province =
+    $country = $zip = $zip2 = $country2 = $subdivision2 = $barangay2 = $city2 = $province2 = $phone2 = $email2 = $tele = '';
+
 $inputNames = ['nationality', 'religion'];
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -130,7 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: ?page=" . ($page + 1));
             exit();
         } else {
-            echo "Form completed!";
             exit();
         }
     }
@@ -168,6 +170,7 @@ $province = $form_data['province'] ?? '';
 $country = $form_data['country'] ?? '';
 $country2 = $form_data['country2'] ?? '';
 $zip = $form_data['zip'] ?? '';
+$zip2 = $form_data['zip2'] ?? '';
 $unit2 = $form_data['unit2'] ?? '';
 $blk2 = $form_data['blk2'] ?? '';
 $street2 = $form_data['street2'] ?? '';
@@ -175,8 +178,8 @@ $subdivision2 = $form_data['subdivision2'] ?? '';
 $barangay2 = $form_data['barangay2'] ?? '';
 $city2 = $form_data['city2'] ?? '';
 $province2 = $form_data['province2'] ?? '';
-$phone2 = $form_data['phone2'] ?? '';
-$email2 = $form_data['email2'] ?? '';
+$phone = $form_data['phone'] ?? '';
+$email = $form_data['email'] ?? '';
 $tele = $form_data['tele'] ?? '';
 ?>
 
@@ -338,15 +341,15 @@ $tele = $form_data['tele'] ?? '';
                         </div>
 
                         <div>
-                            <label for="country2">Country</label>
-                            <select name="country2" id="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?>">
+                            <label for="country">Country</label>
+                            <select name="country" id="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?>">
                                 <?php for ($i = 0; $i < count($countries); $i++) { ?>
                                     <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
                                         <?php echo $countries[$i]; ?>
                                     </option>
                                 <?php } ?>
                             </select>
-                            <span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
+                            <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
                         </div>
 
                         <div>
@@ -369,54 +372,54 @@ $tele = $form_data['tele'] ?? '';
                         </div>
                         <div>
                             <label for="blk">House/Lot & Blk. No</label>
-                            <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($blk2); ?>">
+                            <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($blk2 ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                             <span class="error"><?php echo isset($errors['blk2']) ? $errors['blk2'] : ''; ?></span>
                         </div>
                         <div>
                             <label for="street">Street Name</label>
-                            <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street2); ?>">
+                            <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street2 ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                             <span class="error"><?php echo isset($errors['street2']) ? $errors['street2'] : ''; ?></span>
                         </div>
                         <div>
                             <label for="subdivision">Subdivision</label>
-                            <input type="text" name="subdivision" class="<?php echo isset($errors['subdivision']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
-                            <span class="error"><?php echo isset($errors['subdivision']) ? $errors['subdivision'] : ''; ?></span>
+                            <input type="text" name="subdivision2" class="<?php echo isset($errors['subdivision2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
+                            <span class="error"><?php echo isset($errors['subdivision2']) ? $errors['subdivision2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="barangay">Barangay/District/Locality</label>
-                            <input type="text" name="barangay" class="<?php echo isset($errors['barangay']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
-                            <span class="error"><?php echo isset($errors['barangay']) ? $errors['barangay'] : ''; ?></span>
+                            <input type="text" name="barangay2" class="<?php echo isset($errors['barangay2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
+                            <span class="error"><?php echo isset($errors['barangay2']) ? $errors['barangay2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="city">City/Municipality</label>
-                            <input type="text" name="city" class="<?php echo isset($errors['city']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
-                            <span class="error"><?php echo isset($errors['city']) ? $errors['city'] : ''; ?></span>
+                            <input type="text" name="city2" class="<?php echo isset($errors['city2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
+                            <span class="error"><?php echo isset($errors['city2']) ? $errors['city2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="province">Province</label>
-                            <input type="text" name="province" class="<?php echo isset($errors['province']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
-                            <span class="error"><?php echo isset($errors['province']) ? $errors['province'] : ''; ?></span>
+                            <input type="text" name="province2" class="<?php echo isset($errors['province2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
+                            <span class="error"><?php echo isset($errors['province2']) ? $errors['province2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="country">Country</label>
-                            <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+                            <select name="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
                                 <?php for ($i = 0; $i < count($countries); $i++) { ?>
                                     <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
                                         <?php echo $countries[$i]; ?>
                                     </option>
                                 <?php } ?>
                             </select>
-                            <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+                            <span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="zip">Zip Code</label>
-                            <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
-                            <span class="error"><?php echo isset($errors['zip']) ? $errors['zip'] : ''; ?></span>
+                            <input type="text" name="zip2" class="<?php echo isset($errors['zip2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
+                            <span class="error"><?php echo isset($errors['zip2']) ? $errors['zip2'] : ''; ?></span>
                         </div>
 
                         <div>
@@ -431,7 +434,7 @@ $tele = $form_data['tele'] ?? '';
                         </div>
                         <div>
                             <label for="tele">Telephone</label>
-                            <input type="text" name="phone" class="<?php echo isset($errors['phone']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($phone); ?>">
+                            <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
                             <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
                         </div>
                     </div>
@@ -483,7 +486,7 @@ $tele = $form_data['tele'] ?? '';
             </section>
         </form>
     </section>
-    
+
     <section class="output_display">
         <h2>Personal Data</h2>
         <div class="section">
