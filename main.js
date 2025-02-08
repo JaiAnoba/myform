@@ -96,15 +96,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if (civilStatusSelect && otherStatusInput) {
-        otherStatusInput.style.display = 'none';
-        civilStatusSelect.addEventListener('change', () => {
-            if (civilStatusSelect.value === 'Others') {
-                civilStatusSelect.style.display = 'none';
-                otherStatusInput.style.display = 'inline-block';
-                otherStatusInput.focus();
-            }
-        });
+    // Civil Status Handling
+    function updateStatusDisplay() {
+        if (civilStatusSelect.value === 'Others') {
+            civilStatusSelect.style.display = 'none';
+            otherStatusInput.style.display = 'inline-block';
+            otherStatusInput.focus();
+        } else {
+            otherStatusInput.style.display = 'none';
+            civilStatusSelect.style.display = 'inline-block';
+        }
+    }
+
+    // Check if a previous value was stored in sessionStorage (for navigation between pages)
+    if (sessionStorage.getItem('civil_status') === 'Others') {
+        civilStatusSelect.value = 'Others';
+        otherStatusInput.value = sessionStorage.getItem('other_status') || '';
+        updateStatusDisplay();
+    }
+
+    civilStatusSelect.addEventListener('change', () => {
+        updateStatusDisplay();
+        sessionStorage.setItem('civil_status', civilStatusSelect.value);
+    });
+
+    otherStatusInput.addEventListener('input', () => {
+        sessionStorage.setItem('other_status', otherStatusInput.value);
+    });
+
+    function displayUserData() {
+        const formData = new FormData(form);
+        const civilStatus = formData.get('civil_status');
+        const otherStatus = formData.get('otherStatus');
+        
+        document.querySelector('.o_status').innerText = (civilStatus === 'Others' && otherStatus.trim() !== '') 
+            ? otherStatus 
+            : civilStatus;
     }
 
     const backArrow = document.createElement('i');

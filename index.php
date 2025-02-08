@@ -305,22 +305,18 @@ $tele = $form_data['tele'] ?? '';
                         <!-- Civil Status -->
                         <div class="status-container">
                             <label id="civilStatusLabel">Civil Status</label>
-
                             <select id="civilStatus" name="civil_status" class="<?php echo isset($errors['civil_status']) ? 'error' : ''; ?>">
-                                <option value="Single">Single</option>
-                                <option value="Married">Married</option>
-                                <option value="Widowed">Widowed</option>
-                                <option value="Legally Separated">Legally Separated</option>
-                                <option value="Others">Others</option>
+                                <option value="Single" <?php echo ($civil_status == "Single") ? "selected" : ""; ?>>Single</option>
+                                <option value="Married" <?php echo ($civil_status == "Married") ? "selected" : ""; ?>>Married</option>
+                                <option value="Widowed" <?php echo ($civil_status == "Widowed") ? "selected" : ""; ?>>Widowed</option>
+                                <option value="Legally Separated" <?php echo ($civil_status == "Legally Separated") ? "selected" : ""; ?>>Legally Separated</option>
+                                <option value="Others" <?php echo ($civil_status == "Others") ? "selected" : ""; ?>>Others</option>
                             </select>
 
-                            <input type="text" id="otherStatus" name="otherStatus" placeholder="Enter your civil status">
-                        </div>
-
-                        <div id="othersInput" style="display:none;">
-                            <label for="others">Please specify:</label>
-                            <input type="text" name="others" id="others" class="<?php echo isset($errors['others']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($_POST['others'] ?? ''); ?>">
-                            <span class="error"><?php echo isset($errors['others']) ? $errors['others'] : ''; ?></span>
+                            <!-- Hidden input field for "Others" option -->
+                            <input type="text" id="otherStatus" name="otherStatus" placeholder="Enter your civil status"
+                                value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
+                                style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
                         </div>
 
                         <!-- Nationality -->
