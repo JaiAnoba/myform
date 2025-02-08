@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.querySelector('.o_name').innerText = `${formData.get('last_name')}, ${formData.get('first_name')} ${formData.get('middle_name').charAt(0).toUpperCase()}.`;
         document.querySelector('.o_age').innerText = `${age}`;
-        document.querySelector('.o_status').innerText = `Civil Status: ${formData.get('civil_status') === 'Others' ? formData.get('otherStatus') : formData.get('civil_status')}`;
+        document.querySelector('.o_status').innerText = `${formData.get('civil_status') === 'Others' ? formData.get('otherStatus') : formData.get('civil_status')}`;
         document.querySelector('.o_nationality').innerText = formData.get('nationality');
         document.querySelector('.o_religion').innerText = formData.get('religion');
         document.querySelector('.o_tin').innerText = formData.get('tin');
@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.o_unit1').innerText = formData.get('unit2');
         document.querySelector('.o_street1').innerText = formData.get('street2');
         document.querySelector('.o_zip1').innerText = formData.get('zip2');
-        document.querySelector('.o_fname').innerText = `${formData.get('flast')}, ${formData.get('ffirst')} ${formData.get('fmiddle').charAt(0).toUpperCase()}.`;
-        document.querySelector('.o_mname').innerText = `${formData.get('mlast')}, ${formData.get('mfirst')} ${formData.get('mmiddle').charAt(0).toUpperCase()}.`;
+        document.querySelector('.o_fname').innerText = `${formData.get('flast')}, ${formData.get('ffirst')}, ${formData.get('fmiddle')}`;
+        document.querySelector('.o_mname').innerText = `${formData.get('mlast')}, ${formData.get('mfirst')}, ${formData.get('mmiddle')}`;
     }
 
     nextButton.addEventListener('click', (event) => {

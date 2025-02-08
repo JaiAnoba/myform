@@ -371,13 +371,15 @@ $tele = $form_data['tele'] ?? '';
                             <span class="error"><?php echo isset($errors['unit2']) ? $errors['unit2'] : ''; ?></span>
                         </div>
                         <div>
-                            <label for="blk">House/Lot & Blk. No</label>
-                            <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($blk2 ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            <label for="blk2">House/Lot & Blk. No</label>
+                            <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>" 
+                           value="<?php echo htmlspecialchars($blk2, ENT_QUOTES, 'UTF-8'); ?>">
                             <span class="error"><?php echo isset($errors['blk2']) ? $errors['blk2'] : ''; ?></span>
                         </div>
                         <div>
-                            <label for="street">Street Name</label>
-                            <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street2 ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            <label for="street2">Street Name</label>
+                            <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>" 
+                            value="<?php echo htmlspecialchars($street2, ENT_QUOTES, 'UTF-8'); ?>">
                             <span class="error"><?php echo isset($errors['street2']) ? $errors['street2'] : ''; ?></span>
                         </div>
                         <div>

@@ -359,6 +359,7 @@ input[type=radio].error {
     justify-content: space-between;
     margin-bottom: 10px;
 }
+
 label {
     text-align: justify;
 }
@@ -366,5 +367,4 @@ label {
 .field-container p {
     width: 28%;
     text-align: justify;
-    border: solid 1px black;
 }
