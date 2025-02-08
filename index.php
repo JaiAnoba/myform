@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2'];
+$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
 
 $countries = [
     "United States",
@@ -59,7 +59,7 @@ $countries = [
 
 $last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street =
     $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province =
-    $country = $zip = $zip2 = $country2 = $subdivision2 = $barangay2 = $city2 = $province2 = $phone2 = $email2 = $tele = '';
+    $country = $zip = $zip2 = $country2 = $subdivision2 = $barangay2 = $city2 = $province2 = $phone2 = $email2 = $tele = $otherStatus = '';
 
 $inputNames = ['nationality', 'religion'];
 
@@ -76,7 +76,7 @@ $form_data = $_SESSION['form_data'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['form_data'] = $_POST;
 
-    // Loop through each field and perform validation using a for loop
+    // Loop through each field and perform validation
     for ($i = 0; $i < count($fields); $i++) {
         $field = $fields[$i];
         $$field = trim($_POST[$field] ?? '');
@@ -143,6 +143,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['civil_status'] = "Civil Status is required.";
     }
 
+    // If 'Others' is selected
+    if ($civil_status == 'Others') {
+        if (empty($otherStatus)) {
+            $errors['otherStatus'] = "Please specify your civil status.";
+        } elseif (!preg_match("/^[a-zA-Z\s]+$/", $otherStatus)) {
+            $errors['otherStatus'] = "Civil status must contain only letters.";
+        }
+    }
+
     // TIN Validation
     if (empty($tin) || preg_match("/^\s+$/", $tin)) {
         $errors['tin'] = "Tax Identification No. is required and cannot contain only spaces.";
@@ -155,6 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['zip'] = "Zip Code is required and cannot contain only spaces.";
     } elseif (!preg_match("/^[0-9]{4,6}$/", $zip)) {
         $errors['zip'] = "Zip Code must contain only 4-6 digits.";
+    }
+
+    if (empty($zip2) || preg_match("/^\s+$/", $zip2)) {
+        $errors['zip2'] = "Zip Code is required and cannot contain only spaces.";
+    } elseif (!preg_match("/^[0-9]{4,6}$/", $zip2)) {
+        $errors['zip2'] = "Zip Code must contain only 4-6 digits.";
     }
 
     // Phone Validation
@@ -233,6 +248,7 @@ $province2 = $form_data['province2'] ?? '';
 $phone = $form_data['phone'] ?? '';
 $email = $form_data['email'] ?? '';
 $tele = $form_data['tele'] ?? '';
+$otherStatus = $form_data['otherStatus'] ?? '';
 ?>
 
 <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>" style="display: none;">
@@ -317,6 +333,7 @@ $tele = $form_data['tele'] ?? '';
                             <input type="text" id="otherStatus" name="otherStatus" placeholder="Enter your civil status"
                                 value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
                                 style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
+
                         </div>
 
                         <!-- Nationality -->
@@ -333,7 +350,7 @@ $tele = $form_data['tele'] ?? '';
                             <span class="error"><?php echo isset($errors['religion']) ? $errors['religion'] : ''; ?></span>
                         </div>
 
-                        <!-- Tax Identification No. -->
+                        <!-- TIN -->
                         <div>
                             <label for="tax">Tax Identification No.</label>
                             <input type="text" name="tin" class="<?php echo isset($errors['tin']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tin); ?>">
@@ -429,25 +446,25 @@ $tele = $form_data['tele'] ?? '';
                         </div>
                         <div>
                             <label for="subdivision">Subdivision</label>
-                            <input type="text" name="subdivision2" class="<?php echo isset($errors['subdivision2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
+                            <input type="text" name="subdivision2" class="<?php echo isset($errors['subdivision2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision2); ?>">
                             <span class="error"><?php echo isset($errors['subdivision2']) ? $errors['subdivision2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="barangay">Barangay/District/Locality</label>
-                            <input type="text" name="barangay2" class="<?php echo isset($errors['barangay2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
+                            <input type="text" name="barangay2" class="<?php echo isset($errors['barangay2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay2); ?>">
                             <span class="error"><?php echo isset($errors['barangay2']) ? $errors['barangay2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="city">City/Municipality</label>
-                            <input type="text" name="city2" class="<?php echo isset($errors['city2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
+                            <input type="text" name="city2" class="<?php echo isset($errors['city2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city2); ?>">
                             <span class="error"><?php echo isset($errors['city2']) ? $errors['city2'] : ''; ?></span>
                         </div>
 
                         <div>
                             <label for="province">Province</label>
-                            <input type="text" name="province2" class="<?php echo isset($errors['province2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
+                            <input type="text" name="province2" class="<?php echo isset($errors['province2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province2); ?>">
                             <span class="error"><?php echo isset($errors['province2']) ? $errors['province2'] : ''; ?></span>
                         </div>
 
@@ -465,7 +482,7 @@ $tele = $form_data['tele'] ?? '';
 
                         <div>
                             <label for="zip">Zip Code</label>
-                            <input type="text" name="zip2" class="<?php echo isset($errors['zip2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
+                            <input type="text" name="zip2" class="<?php echo isset($errors['zip2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip2); ?>">
                             <span class="error"><?php echo isset($errors['zip2']) ? $errors['zip2'] : ''; ?></span>
                         </div>
 

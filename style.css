@@ -111,7 +111,16 @@ select {
 .page2 .place-grid select {
     width: 100%;
     height: 40px;
-    padding: 12px;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background-color: #eeeeee;
+}
+
+.page3 .address-grid select {
+    width: 100%;
+    height: 40px;
+    padding: 8px;
     border-radius: 20px;
     border: 1px solid #ccc;
     background-color: #eeeeee;

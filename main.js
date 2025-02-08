@@ -55,11 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const birthDate = new Date(formData.get('dob'));
         const today = new Date();
+        const civilStatus = formData.get('civil_status');
+        const otherStatus = formData.get('otherStatus');
         const age = today.getFullYear() - birthDate.getFullYear() - (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate()) ? 1 : 0);
         
         document.querySelector('.o_name').innerText = `${formData.get('last_name')}, ${formData.get('first_name')} ${formData.get('middle_name').charAt(0).toUpperCase()}.`;
         document.querySelector('.o_age').innerText = `${age}`;
-        document.querySelector('.o_status').innerText = `${formData.get('civil_status') === 'Others' ? formData.get('otherStatus') : formData.get('civil_status')}`;
+        document.querySelector('.o_status').innerText = (civilStatus === 'Others' && otherStatus.trim() !== '') 
+    ? otherStatus 
+    : civilStatus;
         document.querySelector('.o_nationality').innerText = formData.get('nationality');
         document.querySelector('.o_religion').innerText = formData.get('religion');
         document.querySelector('.o_tin').innerText = formData.get('tin');
@@ -123,16 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
     otherStatusInput.addEventListener('input', () => {
         sessionStorage.setItem('other_status', otherStatusInput.value);
     });
-
-    function displayUserData() {
-        const formData = new FormData(form);
-        const civilStatus = formData.get('civil_status');
-        const otherStatus = formData.get('otherStatus');
-        
-        document.querySelector('.o_status').innerText = (civilStatus === 'Others' && otherStatus.trim() !== '') 
-            ? otherStatus 
-            : civilStatus;
-    }
 
     const backArrow = document.createElement('i');
     backArrow.className = 'bx bx-arrow-back back-arrow';
