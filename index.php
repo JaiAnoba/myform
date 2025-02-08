@@ -244,20 +244,6 @@ $tele = $form_data['tele'] ?? '';
 </select>
 <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
 
-<select name="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?> <?php echo ($page
-                                                                                            != 3) ? 'hide-country' : ''; ?>" style="display: none;">
-    <?php for ($i = 0; $i < count($countries); $i++) { ?>
-        <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ?
-                                                            'selected' : ''; ?>>
-            <?php echo $countries[$i]; ?>
-        </option>
-    <?php } ?>
-</select>
-<span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -473,7 +459,7 @@ $tele = $form_data['tele'] ?? '';
                             <label for="country">Country</label>
                             <select name="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
                                 <?php for ($i = 0; $i < count($countries); $i++) { ?>
-                                    <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo $countries[$i]; ?>" <?php echo ($country2 == $countries[$i]) ? 'selected' : ''; ?>>
                                         <?php echo $countries[$i]; ?>
                                     </option>
                                 <?php } ?>
