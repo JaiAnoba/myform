@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('.next');
     const civilStatusSelect = document.getElementById('civilStatus');
     const otherStatusInput = document.getElementById('otherStatus');
+    const outputDisplay = document.querySelector('.OUTPUT_DISPLAY');
+    const mainContainer = document.querySelector('.main');
 
     // Show the current page only
     for (let i = 1; i <= 4; i++) {
@@ -22,23 +24,69 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.style.display = 'block';
     }
 
+    if (sessionStorage.getItem('showOutputDisplay') === 'true') {
+        mainContainer.style.display = 'none';
+        outputDisplay.style.display = 'block';
+        displayUserData();
+    }
+
     doneButton.addEventListener('click', (event) => {
         if (currentPage === 4) {
-            // Submit the form when on page 4
-            event.preventDefault(); 
-
-            const mainContainer = document.querySelector('.main');
-            const outputDisplay = document.querySelector('.OUTPUT_DISPLAY');
-            
-            if (mainContainer) {
-                mainContainer.style.display = 'none'; 
-            }
-
-            if (outputDisplay) {
-                outputDisplay.style.display = 'block'; 
-            }
+            event.preventDefault();
+    
+            const formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text()) 
+            .then(data => {
+                mainContainer.style.display = 'none';
+                outputDisplay.style.display = 'block';
+                displayUserData();
+            })
+            .catch(error => console.error('Error:', error));
         }
     });
+    
+
+    function displayUserData() {
+        const formData = new FormData(form);
+        const birthDate = new Date(formData.get('dob'));
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear() - (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate()) ? 1 : 0);
+        
+        document.querySelector('.o_name').innerText = `${formData.get('last_name')}, ${formData.get('first_name')} ${formData.get('middle_name').charAt(0).toUpperCase()}.`;
+        document.querySelector('.o_age').innerText = `${age}`;
+        document.querySelector('.o_status').innerText = `Civil Status: ${formData.get('civil_status') === 'Others' ? formData.get('otherStatus') : formData.get('civil_status')}`;
+        document.querySelector('.o_nationality').innerText = formData.get('nationality');
+        document.querySelector('.o_religion').innerText = formData.get('religion');
+        document.querySelector('.o_tin').innerText = formData.get('tin');
+        document.querySelector('.o_email').innerText = formData.get('email');
+        document.querySelector('.o_phone').innerText = formData.get('phone');
+        document.querySelector('.o_tele').innerText = formData.get('tele');
+        document.querySelector('.o_country').innerText = formData.get('country');
+        document.querySelector('.o_province').innerText = formData.get('province');
+        document.querySelector('.o_city').innerText = formData.get('city');
+        document.querySelector('.o_barangay').innerText = formData.get('barangay');
+        document.querySelector('.o_subdivision').innerText = formData.get('subdivision');
+        document.querySelector('.o_blk').innerText = formData.get('blk');
+        document.querySelector('.o_unit').innerText = formData.get('unit');
+        document.querySelector('.o_street').innerText = formData.get('street');
+        document.querySelector('.o_zip').innerText = formData.get('zip');
+        document.querySelector('.o_country1').innerText = formData.get('country2');
+        document.querySelector('.o_province1').innerText = formData.get('province2');
+        document.querySelector('.o_city1').innerText = formData.get('city2');
+        document.querySelector('.o_barangay1').innerText = formData.get('barangay2');
+        document.querySelector('.o_subdivision1').innerText = formData.get('subdivision2');
+        document.querySelector('.o_blk1').innerText = formData.get('blk2');
+        document.querySelector('.o_unit1').innerText = formData.get('unit2');
+        document.querySelector('.o_street1').innerText = formData.get('street2');
+        document.querySelector('.o_zip1').innerText = formData.get('zip2');
+        document.querySelector('.o_fname').innerText = `${formData.get('flast')}, ${formData.get('ffirst')} ${formData.get('fmiddle').charAt(0).toUpperCase()}.`;
+        document.querySelector('.o_mname').innerText = `${formData.get('mlast')}, ${formData.get('mfirst')} ${formData.get('mmiddle').charAt(0).toUpperCase()}.`;
+    }
 
     nextButton.addEventListener('click', (event) => {
         if (validatePage() || currentPage === 4) {
@@ -48,10 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Civil Status Toggle Logic
     if (civilStatusSelect && otherStatusInput) {
         otherStatusInput.style.display = 'none';
-
         civilStatusSelect.addEventListener('change', () => {
             if (civilStatusSelect.value === 'Others') {
                 civilStatusSelect.style.display = 'none';
@@ -61,22 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Create the back arrow
     const backArrow = document.createElement('i');
     backArrow.className = 'bx bx-arrow-back back-arrow';
+    document.querySelector('.main')?.appendChild(backArrow);
+    
+    if (currentPage === 1) backArrow.style.display = 'none';
 
-    // Append it inside .main
-    const mainContainer = document.querySelector('.main');
-    if (mainContainer) {
-        mainContainer.appendChild(backArrow);
-    }
-
-    // Hide the arrow if on the first page
-    if (currentPage === 1) {
-        backArrow.style.display = 'none';
-    }
-
-    // Functionality to go back
     backArrow.addEventListener('click', () => {
         if (currentPage > 1) {
             window.location.href = `index.php?page=${currentPage - 1}`;
