@@ -16,6 +16,26 @@ body {
     background: #dbeced;
 }
 
+.header  {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    bottom: 400px;
+    left: -70px;
+    gap: 10px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+}
+
+.h_label {
+    margin-block: auto;
+    font-size: 23px;
+    font-weight: 700;
+}
+
 .main {
     width: 1500px;
     height: 800px;
@@ -23,6 +43,8 @@ body {
     border-radius: 20px;
     background: white;
     position: relative;
+    top: 40px;
+    left: -30px;
 }
 
 .label1 {
@@ -347,7 +369,7 @@ input[type=radio].error {
     padding: 20px;
     background-color: #ffffff;
     border-radius: 20px;
-    margin: auto;
+    margin-top: 50px;
 }
 
 .output_display h1 {

@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.o_status').innerText = (civilStatus === 'Others' && otherStatus.trim() !== '') 
     ? otherStatus 
     : civilStatus;
+        document.querySelector('.o_dob').innerText = formData.get('dob');
+        document.querySelector('.o_sex').innerText = formData.get('gender');
         document.querySelector('.o_nationality').innerText = formData.get('nationality');
         document.querySelector('.o_religion').innerText = formData.get('religion');
         document.querySelector('.o_tin').innerText = formData.get('tin');

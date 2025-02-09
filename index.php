@@ -300,6 +300,10 @@ $otherStatus = $form_data['otherStatus'] ?? '';
 </head>
 
 <body>
+    <div class="header">
+        <img src="pics/F_LOGO.png" class="logo">
+        <p class="h_label">Form</p>
+    </div>
     <section class="main">
         <h1 class="label1"> Personal Data </h1>
         <form method="POST" action="?page=<?php echo $page; ?>">
@@ -579,28 +583,27 @@ $otherStatus = $form_data['otherStatus'] ?? '';
     </section>
 
     <section class="output_display">
-        <h1>Personal Data</h1>
         <div class="section">
-            <h3>Personal Details</h3>
-            <div class="field-container">
-                <label>Name:</label>
+            <div class="container-1">
+               <img src="" alt="profile">
                 <p class="o_name"></p>
-            </div>
-            <div class="field-container">
-                <label>Age:</label>
-                <p class="o_age"></p>
-                <label>Civil Status:</label>
                 <p class="o_status"></p>
             </div>
-            <div class="field-container">
-                <label>Nationality:</label>
+            <div class="container-2">
+                <label>Age</label>
+                <p class="o_age"></p>
+                <label>Date of Birth</label>
+                <p class="o_dob"></p>
+                <label>Gender</label>
+                <p class="o_sex"></p>
+                <label>Nationality</label>
                 <p class="o_nationality"></p>
-                <label>Religion:</label>
+                <label>Religion</label>
                 <p class="o_religion"></p>
+                <label>TIN</label>
+                <p class="o_tin"></p>
             </div>
             <div class="field-container">
-                <label>Tax Identification No.:</label>
-                <p class="o_tin"></p>
                 <label>E-mail Address:</label>
                 <p class="o_email"></p>
             </div>
