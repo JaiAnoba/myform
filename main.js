@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Check if a previous value was stored in sessionStorage (for navigation between pages)
+    // navigation between pages
     if (sessionStorage.getItem('civil_status') === 'Others') {
         civilStatusSelect.value = 'Others';
         otherStatusInput.value = sessionStorage.getItem('other_status') || '';

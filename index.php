@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
+$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'tele', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
 
 $countries = [
     "United States",
@@ -86,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Name Validations
-    $name_fields = ['last_name', 'first_name', 'middle_name', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
+    $name_fields = ['last_name', 'first_name', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
+    $middle_initial = ['middle_name'];
     for ($i = 0; $i < count($name_fields); $i++) {
         $field = $name_fields[$i];
         if (empty($$field) || preg_match("/^\s+$/", $$field)) {
@@ -152,11 +153,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+
     // TIN Validation
     if (empty($tin) || preg_match("/^\s+$/", $tin)) {
         $errors['tin'] = "Tax Identification No. is required and cannot contain only spaces.";
     } elseif (!preg_match("/^[0-9]{9,15}$/", $tin)) {
         $errors['tin'] = "Tax Identification No. must contain only numbers (9-15 digits).";
+    }
+
+    if (!preg_match('/^[0-9]+$/', $tin)) {
+        $errors['tin'] = "TIN must contain only numbers.";
     }
 
     // Zip Code Validation
@@ -172,11 +178,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['zip2'] = "Zip Code must contain only 4-6 digits.";
     }
 
+    if (!preg_match('/^[0-9]+$/', $zip)) {
+        $errors['zip'] = "ZIP code must contain only numbers.";
+    }
+
+    if (!preg_match('/^[0-9]+$/', $zip2)) {
+        $errors['zip2'] = "ZIP code must contain only numbers.";
+    }
+
     // Phone Validation
     if (empty($phone) || preg_match("/^\s+$/", $phone)) {
-        $errors['phone'] = "Phone No. is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{10,15}$/", $phone)) {
-        $errors['phone'] = "Phone No. must contain only 10-15 digits.";
+        $errors['phone'] = "Phone no. is required and cannot contain only spaces.";
+    } elseif (!preg_match("/^[0-9]{11}$/", $phone)) {
+        $errors['phone'] = "Phone no. must contain only 11 digits.";
+    }
+
+    if (!preg_match('/^[0-9]+$/', $phone)) {
+        $errors['phone'] = "Phone no. must contain only numbers.";
+    }
+
+    // Telephone Validation
+    if (empty($tele) || preg_match("/^\s+$/", $tele)) {
+        $errors['tele'] = "Telephone no. is required and cannot contain only spaces.";
+    } elseif (!preg_match('/^[0-9]+$/', $tele)) {
+        $errors['tele'] = "Telephone no. must contain only numbers.";
+    } elseif (!preg_match("/^[0-9]{11}$/", $tele)) {
+        $errors['tele'] = "Telephone no. must contain only 11 digits.";
     }
 
     // Email Validation
@@ -498,8 +525,8 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                         </div>
                         <div>
                             <label for="tele">Telephone</label>
-                            <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
-                            <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
+                            <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" class="<?php echo isset($errors['tele']) ? 'error-input' : ''; ?>" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
+                            <span class="error"><?php echo isset($errors['tele']) ? $errors['tele'] : ''; ?></span>
                         </div>
                     </div>
                 </div>
