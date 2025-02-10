@@ -583,9 +583,9 @@ $otherStatus = $form_data['otherStatus'] ?? '';
     </section>
 
     <section class="output_display">
-        <div class="section">
+        <div class="section-1">
             <div class="container-1">
-               <img src="" alt="profile">
+                <img src="" alt="profile">
                 <p class="o_name"></p>
                 <p class="o_status"></p>
             </div>
@@ -603,87 +603,100 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                 <label>TIN</label>
                 <p class="o_tin"></p>
             </div>
-            <div class="field-container">
-                <label>E-mail Address:</label>
+            <div class="container-3">
+                <label>Phone no.</label>
+                <p class="o_phone"></p>
+                <label>Telephone no.</label>
+                <p class="o_tele"></p>
+                <label>Email Address</label>
                 <p class="o_email"></p>
             </div>
-            <div class="field-container">
-                <label>Phone No.:</label>
-                <p class="o_phone"></p>
-                <label>Telephone:</label>
-                <p class="o_tele"></p>
-            </div>
         </div>
-        <div class="section">
+
+        <div class="section-2">
             <h3>Place of Birth</h3>
-            <div class="field-container">
-                <label>Country:</label>
-                <p class="o_country"></p>
-                <label>Province:</label>
-                <p class="o_province"></p>
+            <div class="container-group">
+                <div class="container-4">
+                    <div class="separator">
+                        <label>Country</label>
+                        <p class="o_country"></p>
+                    </div>
+                    <div class="separator">
+                        <label>Province</label>
+                        <p class="o_province"></p>
+                    </div>
+                    <div class="separator">
+                        <label>City/Municipality</label>
+                        <p class="o_city"></p>
+                    </div>
+                    <div class="separator">
+                        <label>Zip Code</label>
+                        <p class="o_zip"></p>
+                    </div>
+                    <div class="separator">
+                        <label>Barangay/District/Locality</label>
+                        <p class="o_barangay"></p>
+                    </div>
+                </div>
+                <div class="container-5">
+                    <label>Street Name</label>
+                    <p class="o_street"></p>
+                    <label>Subdivision</label>
+                    <p class="o_subdivision"></p>
+                    <label>House/Lot & Blk. No.</label>
+                    <p class="o_blk"></p>
+                    <label>RM/FLR/Unit No. & Bldg. Name</label>
+                    <p class="o_unit"></p>
+                </div>
             </div>
-            <div class="field-container">
-                <label>City/Municipality:</label>
-                <p class="o_city"></p>
-                <label>Barangay/District/Locality:</label>
-                <p class="o_barangay"></p>
-            </div>
-            <div class="field-container">
-                <label>Subdivision:</label>
-                <p class="o_subdivision"></p>
-                <label>House/Lot & Blk. No.:</label>
-                <p class="o_blk"></p>
-            </div>
-            <div class="field-container">
-                <label>RM/FLR/Unit No. & Bldg. Name:</label>
-                <p class="o_unit"></p>
-                <label>Street Name:</label>
-                <p class="o_street"></p>
-            </div>
-            <div class="field-container">
-                <label>Zip Code:</label>
-                <p class="o_zip"></p>
+            <!-- Small Circles for toggling -->
+            <div class="toggle-buttons">
+                <span class="toggle-btn"></span>
+                <span class="toggle-btn"></span>
             </div>
         </div>
-        <div class="section">
+
+        <div class="section-3">
             <h3>Home Address</h3>
-            <div class="field-container">
-                <label>Country:</label>
-                <p class="o_country1"></p>
-                <label>Province:</label>
-                <p class="o_province1"></p>
+            <div class="container-group">
+                <div class="container-6">
+                    <label>Country</label>
+                    <p class="o_country1"></p>
+                    <label>Province</label>
+                    <p class="o_province1"></p>
+                    <label>City/Municipality</label>
+                    <p class="o_city1"></p>
+                    <label>Zip Code</label>
+                    <p class="o_zip1"></p>
+                    <label>Barangay/District/Locality</label>
+                    <p class="o_barangay1"></p>
+                </div>
+                <div class="container-7">
+                    <label>Street Name</label>
+                    <p class="o_street1"></p>
+                    <label>Subdivision</label>
+                    <p class="o_subdivision1"></p>
+                    <label>House/Lot & Blk. No.</label>
+                    <p class="o_blk1"></p>
+                    <label>RM/FLR/Unit No. & Bldg. Name</label>
+                    <p class="o_unit1"></p>
+                </div>
             </div>
-            <div class="field-container">
-                <label>City/Municipality:</label>
-                <p class="o_city1"></p>
-                <label>Barangay/District/Locality:</label>
-                <p class="o_barangay1"></p>
-            </div>
-            <div class="field-container">
-                <label>Subdivision:</label>
-                <p class="o_subdivision1"></p>
-                <label>House/Lot & Blk. No.:</label>
-                <p class="o_blk1"></p>
-            </div>
-            <div class="field-container">
-                <label>RM/FLR/Unit No. & Bldg. Name:</label>
-                <p class="o_unit1"></p>
-                <label>Street Name:</label>
-                <p class="o_street1"></p>
-            </div>
-            <div class="field-container">
-                <label>Zip Code:</label>
-                <p class="o_zip1"></p>
+            <!-- Small Circles for toggling -->
+            <div class="toggle-buttons">
+                <span class="toggle-btn"></span>
+                <span class="toggle-btn"></span>
             </div>
         </div>
-        <div class="section">
+
+        <div class="section-4">
             <h3>Parental Information</h3>
-            <div class="field-container">
-                <label>Father's Name:</label>
+            <div class="container-8">
+                <label>Father's Name</label>
                 <p class="o_fname"></p>
             </div>
-            <div class="field-container">
-                <label>Mother's Name:</label>
+            <div class="container-9">
+                <label>Mother's Maiden Name</label>
                 <p class="o_mname"></p>
             </div>
         </div>
