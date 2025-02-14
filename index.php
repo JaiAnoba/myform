@@ -585,31 +585,45 @@ $otherStatus = $form_data['otherStatus'] ?? '';
     <section class="output_display">
         <div class="section-1">
             <div class="container-1">
-                <img src="" alt="profile">
-                <p class="o_name"></p>
-                <p class="o_status"></p>
+                <img src="pics/4.png" class="profile">
+                <div class="wrap-1">
+                    <p class="o_name"></p>
+                    <p class="o_status"></p>
+                </div>
             </div>
             <div class="container-2">
-                <label>Age</label>
-                <p class="o_age"></p>
-                <label>Date of Birth</label>
-                <p class="o_dob"></p>
-                <label>Gender</label>
-                <p class="o_sex"></p>
-                <label>Nationality</label>
-                <p class="o_nationality"></p>
-                <label>Religion</label>
-                <p class="o_religion"></p>
-                <label>TIN</label>
-                <p class="o_tin"></p>
+                <div class="wrap-2">
+                    <label>Age</label>
+                    <p class="o_age"></p>
+                    <label>Date of Birth</label>
+                    <p class="o_dob"></p>
+                    <label>Gender</label>
+                    <p class="o_sex"></p>
+                </div>
+                <div class="wrap-3">
+                    <label>Nationality</label>
+                    <p class="o_nationality"></p>
+                    <label>Religion</label>
+                    <p class="o_religion"></p>
+                    <label>TIN</label>
+                    <p class="o_tin"></p>
+                </div>
             </div>
             <div class="container-3">
-                <label>Phone no.</label>
-                <p class="o_phone"></p>
-                <label>Telephone no.</label>
-                <p class="o_tele"></p>
-                <label>Email Address</label>
-                <p class="o_email"></p>
+                <div class="wrap-4">  
+                    <div class="sub-wrap-4">               
+                        <label>Phone no.</label>
+                        <p class="o_phone"></p>
+                    </div> 
+                    <div class="sub-wrap-5">
+                        <label>Telephone no.</label>
+                        <p class="o_tele"></p>
+                    </div> 
+                </div> 
+                <div class="wrap-5">
+                    <label>Email Address</label>
+                    <p class="o_email"></p>
+                </div> 
             </div>
         </div>
 
