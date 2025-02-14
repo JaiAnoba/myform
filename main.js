@@ -142,38 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to toggle sliding effect for Place of Birth & Home Address sections
-    function toggleContainer(containerGroupClass, btn) {
-        const containerGroup = document.querySelector(`.${containerGroupClass}`);
-        const buttons = btn.parentElement.querySelectorAll('.toggle-btn');
-
-        if (!containerGroup) return;
-
-        if (containerGroup.style.transform === "translateX(0%)" || containerGroup.style.transform === "") {
-            containerGroup.style.transform = "translateX(-50%)"; // Slide left
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); // Highlight active button
-        } else {
-            containerGroup.style.transform = "translateX(0%)"; // Slide back
-            buttons.forEach(b => b.classList.remove('active'));
-            buttons[0].classList.add('active'); // Set first button active
-        }
-    }
-
-    // Attach event listeners to the small circles
-    document.querySelectorAll('.toggle-buttons').forEach((toggleGroup, index) => {
-        const buttons = toggleGroup.querySelectorAll('.toggle-btn');
-        const containerGroupClass = index === 0 ? "container-group-1" : "container-group-2";
-
-        buttons.forEach((btn, btnIndex) => {
-            btn.addEventListener('click', function () {
-                toggleContainer(containerGroupClass, this);
-            });
-        });
-
-        // Set first button as active and default transform
-        if (buttons.length > 0) {
-            buttons[0].classList.add('active');
-        }
-    });
+    
 });

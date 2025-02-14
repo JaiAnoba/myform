@@ -610,20 +610,20 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                 </div>
             </div>
             <div class="container-3">
-                <div class="wrap-4">  
-                    <div class="sub-wrap-4">               
+                <div class="wrap-4">
+                    <div class="sub-wrap-4">
                         <label>Phone no.</label>
                         <p class="o_phone"></p>
-                    </div> 
+                    </div>
                     <div class="sub-wrap-5">
                         <label>Telephone no.</label>
                         <p class="o_tele"></p>
-                    </div> 
-                </div> 
+                    </div>
+                </div>
                 <div class="wrap-5">
                     <label>Email Address</label>
                     <p class="o_email"></p>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -651,8 +651,6 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                         <label>Barangay/District/Locality</label>
                         <p class="o_barangay"></p>
                     </div>
-                </div>
-                <div class="container-5">
                     <label>Street Name</label>
                     <p class="o_street"></p>
                     <label>Subdivision</label>
@@ -663,17 +661,12 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                     <p class="o_unit"></p>
                 </div>
             </div>
-            <!-- Small Circles for toggling -->
-            <div class="toggle-buttons">
-                <span class="toggle-btn"></span>
-                <span class="toggle-btn"></span>
-            </div>
         </div>
 
         <div class="section-3">
             <h3>Home Address</h3>
             <div class="container-group">
-                <div class="container-6">
+                <div class="container-5">
                     <label>Country</label>
                     <p class="o_country1"></p>
                     <label>Province</label>
@@ -684,8 +677,6 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                     <p class="o_zip1"></p>
                     <label>Barangay/District/Locality</label>
                     <p class="o_barangay1"></p>
-                </div>
-                <div class="container-7">
                     <label>Street Name</label>
                     <p class="o_street1"></p>
                     <label>Subdivision</label>
@@ -695,11 +686,6 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                     <label>RM/FLR/Unit No. & Bldg. Name</label>
                     <p class="o_unit1"></p>
                 </div>
-            </div>
-            <!-- Small Circles for toggling -->
-            <div class="toggle-buttons">
-                <span class="toggle-btn"></span>
-                <span class="toggle-btn"></span>
             </div>
         </div>
 
