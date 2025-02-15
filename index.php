@@ -213,6 +213,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['email'] = "Invalid email format.";
     }
 
+    // OTHER STATUS
+    if (!empty($otherStatus) && !preg_match("/^[a-zA-Z ]+$/", $otherStatus)) {
+        $errors['otherStatus'] = "Must contain only letters.";
+    }
+
 
     if ($page != 4) {
         header("Location: ?page=" . ($page + 1));
@@ -361,9 +366,10 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                             </select>
 
                             <!-- Hidden input field for "Others" option -->
-                            <input type="text" id="otherStatus" name="otherStatus" placeholder="Enter your civil status"
-                                value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
+                            <input type="text" id="otherStatus" name="otherStatus" class="<?php echo isset($errors['otherStatus']) ? 'error' : ''; ?>" placeholder="Enter your civil status"
+                                value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($other_status) : ''; ?>"
                                 style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
+                            <span class="error"><?php echo isset($errors['otherStatus']) ? $errors['otherStatus'] : ''; ?></span>
 
                         </div>
 
