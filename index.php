@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once 'output.php';
+
 $fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'tele', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
 
 $countries = [
@@ -57,6 +59,7 @@ $countries = [
     "Hungary"
 ];
 
+// Initialize variables (moved outside the validation function)
 $last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street =
     $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province =
     $country = $zip = $zip2 = $country2 = $subdivision2 = $barangay2 = $city2 = $province2 = $phone2 = $email2 = $tele = $otherStatus = '';
@@ -73,14 +76,58 @@ if (!isset($_SESSION['form_data'])) {
 
 $form_data = $_SESSION['form_data'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $_SESSION['form_data'] = $_POST;
+// Validation function
+function validate_form_data($data)
+{
 
-    // Loop through each field and perform validation
-    for ($i = 0; $i < count($fields); $i++) {
-        $field = $fields[$i];
-        $$field = trim($_POST[$field] ?? '');
-        if (empty($$field)) {
+    global $countries, $inputNames; // Access global variables
+    $errors = [];
+
+    // Extract data from the array, using null coalescing operator
+    $last_name      = trim($data['last_name'] ?? '');
+    $first_name     = trim($data['first_name'] ?? '');
+    $middle_name    = trim($data['middle_name'] ?? '');
+    $dob            = trim($data['dob'] ?? '');
+    $gender         = trim($data['gender'] ?? '');
+    $civil_status   = trim($data['civil_status'] ?? '');
+    $nationality    = trim($data['nationality'] ?? '');
+    $religion       = trim($data['religion'] ?? '');
+    $tin            = trim($data['tin'] ?? '');
+    $unit           = trim($data['unit'] ?? '');
+    $unit2          = trim($data['unit2'] ?? '');
+    $blk            = trim($data['blk'] ?? '');
+    $blk2           = trim($data['blk2'] ?? '');
+    $street         = trim($data['street'] ?? '');
+    $street2        = trim($data['street2'] ?? '');
+    $phone          = trim($data['phone'] ?? '');
+    $email          = trim($data['email'] ?? '');
+    $flast          = trim($data['flast'] ?? '');
+    $ffirst         = trim($data['ffirst'] ?? '');
+    $fmiddle        = trim($data['fmiddle'] ?? '');
+    $mlast          = trim($data['mlast'] ?? '');
+    $mfirst         = trim($data['mfirst'] ?? '');
+    $mmiddle        = trim($data['mmiddle'] ?? '');
+    $subdivision    = trim($data['subdivision'] ?? '');
+    $barangay       = trim($data['barangay'] ?? '');
+    $city           = trim($data['city'] ?? '');
+    $subdivision2   = trim($data['subdivision2'] ?? '');
+    $barangay2      = trim($data['barangay2'] ?? '');
+    $city2          = trim($data['city2'] ?? '');
+    $province       = trim($data['province'] ?? '');
+    $country        = trim($data['country'] ?? '');
+    $zip            = trim($data['zip'] ?? '');
+    $province2      = trim($data['province2'] ?? '');
+    $country2       = trim($data['country2'] ?? '');
+    $zip2           = trim($data['zip2'] ?? '');
+    $tele = trim($data['tele'] ?? '');
+    $otherStatus = trim($data['otherStatus'] ?? '');
+    $fields = array_keys($data);
+
+    // Required fields (check for empty values)
+    $required_fields = ['last_name', 'first_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip', 'unit2', 'blk2', 'street2', 'subdivision2', 'barangay2', 'city2', 'province2', 'country2', 'zip2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
+
+    foreach ($required_fields as $field) {
+        if (empty($data[$field])) {
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required.";
         }
     }
@@ -90,19 +137,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $middle_initial = ['middle_name'];
     for ($i = 0; $i < count($name_fields); $i++) {
         $field = $name_fields[$i];
-        if (empty($$field) || preg_match("/^\s+$/", $$field)) {
+        if (empty($data[$field]) || preg_match("/^\s+$/", $data[$field])) {
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required and cannot contain only spaces.";
-        } elseif ($field == 'middle_name' && !preg_match("/^[a-zA-Z\.]*$/", $$field)) { // Allow period for middle initial
+        } elseif ($field == 'middle_name' && !preg_match("/^[a-zA-Z\.]*$/", $data[$field])) { // Allow period for middle initial
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and a period (for middle initial).";
-        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $$field)) { // Reject numbers for other name fields
+        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $data[$field])) { // Reject numbers for other name fields
             $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and spaces.";
         }
     }
 
     // RELIGION AND NATIONALTY
     for ($j = 0; $j < count($inputNames); $j++) {
-        if (!empty($_POST[$inputNames[$j]])) {
-            $value = trim($_POST[$inputNames[$j]]);
+        if (!empty($data[$inputNames[$j]])) {
+            $value = trim($data[$inputNames[$j]]);
             $isValid = true;
 
             for ($k = 0; $k < strlen($value); $k++) {
@@ -118,34 +165,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // General Text Fields Validation (Ensuring No Spaces Only Input)
-    $text_fields = ['nationality', 'religion', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province'];
-    for ($i = 0; $i < count($text_fields); $i++) {
-        $field = $text_fields[$i];
-        if (empty($$field) || preg_match("/^\s+$/", $$field)) {
-            $errors[$field] = ucfirst($field) . " is required and cannot contain only spaces.";
-        }
-    }
-
     // Date of Birth Validation
-    if (empty($dob)) {
+    if (empty($data['dob'])) {
         $errors['dob'] = "Date of Birth is required.";
-    } elseif (strtotime($dob) > strtotime('-18 years')) {
+    } elseif (strtotime($data['dob']) > strtotime('-18 years')) {
         $errors['dob'] = "You must be at least 18 years old.";
     }
 
     // Gender Validation
-    if (empty($gender)) {
+    if (empty($data['gender'])) {
         $errors['gender'] = "Gender is required.";
     }
 
     // Civil Status Validation
-    if (empty($civil_status)) {
+    if (empty($data['civil_status'])) {
         $errors['civil_status'] = "Civil Status is required.";
     }
 
     // If 'Others' is selected
-    if ($civil_status == 'Others') {
+    if ($data['civil_status'] == 'Others') {
         if (empty($otherStatus)) {
             $errors['otherStatus'] = "Please specify your civil status.";
         } elseif (!preg_match("/^[a-zA-Z\s]+$/", $otherStatus)) {
@@ -153,47 +191,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-
     // TIN Validation
-    if (empty($tin) || preg_match("/^\s+$/", $tin)) {
+    if (empty($data['tin']) || preg_match("/^\s+$/", $data['tin'])) {
         $errors['tin'] = "Tax Identification No. is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{9,15}$/", $tin)) {
+    } elseif (!preg_match("/^[0-9]{9,15}$/", $data['tin'])) {
         $errors['tin'] = "Tax Identification No. must contain only numbers (9-15 digits).";
     }
 
-    if (!preg_match('/^[0-9]+$/', $tin)) {
+    if (!preg_match('/^[0-9]+$/', $data['tin'])) {
         $errors['tin'] = "TIN must contain only numbers.";
     }
 
     // Zip Code Validation
-    if (empty($zip) || preg_match("/^\s+$/", $zip)) {
+    if (empty($data['zip']) || preg_match("/^\s+$/", $data['zip'])) {
         $errors['zip'] = "Zip Code is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{4,6}$/", $zip)) {
+    } elseif (!preg_match("/^[0-9]{4,6}$/", $data['zip'])) {
         $errors['zip'] = "Zip Code must contain only 4-6 digits.";
     }
 
-    if (empty($zip2) || preg_match("/^\s+$/", $zip2)) {
+    if (empty($data['zip2']) || preg_match("/^\s+$/", $data['zip2'])) {
         $errors['zip2'] = "Zip Code is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{4,6}$/", $zip2)) {
+    } elseif (!preg_match("/^[0-9]{4,6}$/", $data['zip2'])) {
         $errors['zip2'] = "Zip Code must contain only 4-6 digits.";
     }
 
-    if (!preg_match('/^[0-9]+$/', $zip)) {
+    if (!preg_match('/^[0-9]+$/', $data['zip'])) {
         $errors['zip'] = "ZIP code must contain only numbers.";
     }
 
-    if (!preg_match('/^[0-9]+$/', $zip2)) {
+    if (!preg_match('/^[0-9]+$/', $data['zip2'])) {
         $errors['zip2'] = "ZIP code must contain only numbers.";
     }
 
     // Phone Validation
-    if (empty($phone) || preg_match("/^\s+$/", $phone)) {
+    if (empty($data['phone']) || preg_match("/^\s+$/", $data['phone'])) {
         $errors['phone'] = "Phone no. is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{11}$/", $phone)) {
+    } elseif (!preg_match("/^[0-9]{11}$/", $data['phone'])) {
         $errors['phone'] = "Phone no. must contain only 11 digits.";
     }
 
-    if (!preg_match('/^[0-9]+$/', $phone)) {
+    if (!preg_match('/^[0-9]+$/', $data['phone'])) {
         $errors['phone'] = "Phone no. must contain only numbers.";
     }
 
@@ -207,9 +244,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Email Validation
-    if (empty($email) || preg_match("/^\s+$/", $email)) {
+    if (empty($data['email']) || preg_match("/^\s+$/", $data['email'])) {
         $errors['email'] = "E-mail Address is required and cannot contain only spaces.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "Invalid email format.";
     }
 
@@ -217,27 +254,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($otherStatus) && !preg_match("/^[a-zA-Z ]+$/", $otherStatus)) {
         $errors['otherStatus'] = "Must contain only letters.";
     }
+    return $errors;
+}
 
-
-    if ($page != 4) {
-        header("Location: ?page=" . ($page + 1));
-        exit();
-    }
-
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $_SESSION['form_data'] = $_POST;
+    // Validate form data
+    $errors = validate_form_data($_POST);
+    // Store errors in session
     $_SESSION['errors'] = $errors;
 
-    if (empty($errors)) {
-        if ($page < 4) {
-            header("Location: ?page=" . ($page + 1));
-            exit();
-        } else {
-            exit();
-        }
+    if ($page < 4) {
+        header("Location: ?page=" . ($page + 1));
+        exit();
     }
 }
 
 
+// Retrieve errors and form data from session
 $errors = $_SESSION['errors'] ?? [];
 $form_data = $_SESSION['form_data'] ?? [];
 
@@ -367,7 +401,7 @@ $otherStatus = $form_data['otherStatus'] ?? '';
 
                             <!-- Hidden input field for "Others" option -->
                             <input type="text" id="otherStatus" name="otherStatus" class="<?php echo isset($errors['otherStatus']) ? 'error' : ''; ?>" placeholder="Enter your civil status"
-                                value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($other_status) : ''; ?>"
+                                value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
                                 style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
                             <span class="error"><?php echo isset($errors['otherStatus']) ? $errors['otherStatus'] : ''; ?></span>
 
@@ -535,7 +569,7 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                         </div>
                         <div>
                             <label for="tele">Telephone</label>
-                            <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" class="<?php echo isset($errors['tele']) ? 'error-input' : ''; ?>" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
+                            <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
                             <span class="error"><?php echo isset($errors['tele']) ? $errors['tele'] : ''; ?></span>
                         </div>
                     </div>
@@ -588,126 +622,9 @@ $otherStatus = $form_data['otherStatus'] ?? '';
         </form>
     </section>
 
-    <section class="output_display">
-        <div class="section-1">
-            <div class="container-1">
-                <img src="pics/4.png" class="profile">
-                <div class="wrap-1">
-                    <p class="o_name"></p>
-                    <p class="o_status"></p>
-                </div>
-            </div>
-            <div class="container-2">
-                <div class="wrap-2">
-                    <label>Age</label>
-                    <p class="o_age"></p>
-                    <label>Date of Birth</label>
-                    <p class="o_dob"></p>
-                    <label>Gender</label>
-                    <p class="o_sex"></p>
-                </div>
-                <div class="wrap-3">
-                    <label>Nationality</label>
-                    <p class="o_nationality"></p>
-                    <label>Religion</label>
-                    <p class="o_religion"></p>
-                    <label>TIN</label>
-                    <p class="o_tin"></p>
-                </div>
-            </div>
-            <div class="container-3">
-                <div class="wrap-4">
-                    <div class="sub-wrap-4">
-                        <label>Phone no.</label>
-                        <p class="o_phone"></p>
-                    </div>
-                    <div class="sub-wrap-5">
-                        <label>Telephone no.</label>
-                        <p class="o_tele"></p>
-                    </div>
-                </div>
-                <div class="wrap-5">
-                    <label>Email Address</label>
-                    <p class="o_email"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-2">
-            <h3>Place of Birth</h3>
-            <div class="container-group">
-                <div class="container-4">
-                    <div class="separator">
-                        <label>Country</label>
-                        <p class="o_country"></p>
-                    </div>
-                    <div class="separator">
-                        <label>Province</label>
-                        <p class="o_province"></p>
-                    </div>
-                    <div class="separator">
-                        <label>City/Municipality</label>
-                        <p class="o_city"></p>
-                    </div>
-                    <div class="separator">
-                        <label>Zip Code</label>
-                        <p class="o_zip"></p>
-                    </div>
-                    <div class="separator">
-                        <label>Barangay/District/Locality</label>
-                        <p class="o_barangay"></p>
-                    </div>
-                    <label>Street Name</label>
-                    <p class="o_street"></p>
-                    <label>Subdivision</label>
-                    <p class="o_subdivision"></p>
-                    <label>House/Lot & Blk. No.</label>
-                    <p class="o_blk"></p>
-                    <label>RM/FLR/Unit No. & Bldg. Name</label>
-                    <p class="o_unit"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-3">
-            <h3>Home Address</h3>
-            <div class="container-group">
-                <div class="container-5">
-                    <label>Country</label>
-                    <p class="o_country1"></p>
-                    <label>Province</label>
-                    <p class="o_province1"></p>
-                    <label>City/Municipality</label>
-                    <p class="o_city1"></p>
-                    <label>Zip Code</label>
-                    <p class="o_zip1"></p>
-                    <label>Barangay/District/Locality</label>
-                    <p class="o_barangay1"></p>
-                    <label>Street Name</label>
-                    <p class="o_street1"></p>
-                    <label>Subdivision</label>
-                    <p class="o_subdivision1"></p>
-                    <label>House/Lot & Blk. No.</label>
-                    <p class="o_blk1"></p>
-                    <label>RM/FLR/Unit No. & Bldg. Name</label>
-                    <p class="o_unit1"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-4">
-            <h3>Parental Information</h3>
-            <div class="container-8">
-                <label>Father's Name</label>
-                <p class="o_fname"></p>
-            </div>
-            <div class="container-9">
-                <label>Mother's Maiden Name</label>
-                <p class="o_mname"></p>
-            </div>
-        </div>
+    <section class="OUTPUT_DISPLAY" style="display: none;">
+        <?php 'output.php'; ?>
     </section>
-
 
     <script src="main.js"></script>
 
