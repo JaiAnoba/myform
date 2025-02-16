@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-require_once 'output.php';
 
 $fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'tele', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
 
@@ -263,10 +262,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = validate_form_data($_POST);
     // Store errors in session
     $_SESSION['errors'] = $errors;
-
     if ($page < 4) {
         header("Location: ?page=" . ($page + 1));
         exit();
+    } else { // Add this else block
+        if (empty($errors)) {
+            header("Location: output.php"); // Redirect to output.php
+            exit();
+        }
     }
 }
 

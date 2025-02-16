@@ -58,14 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Done button functionality
     doneButton.addEventListener('click', (event) => {
-        // You might want to submit the form here to process the data on the server
-
-        // Show the output display and hide the pages
-        //outputDisplay.style.display = 'block';
-        //window.location.href = 'output.php';
-        //pages.forEach(page => page.style.display = 'none');
-        //doneButton.style.display = 'none';
-        //backArrow.style.display = 'none';
+        form.submit();
     });
 
 
