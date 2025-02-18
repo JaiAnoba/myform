@@ -1,269 +1,17 @@
 <?php
 session_start();
 
+include 'validation.php';
 
-$fields = ['last_name', 'first_name', 'middle_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'unit2', 'blk', 'blk2', 'street', 'street2', 'phone', 'tele', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle', 'subdivision', 'barangay', 'city', 'subdivision2', 'barangay2', 'city2',  'province', 'country', 'zip', 'province2', 'country2', 'zip2', 'otherStatus'];
-
-$countries = [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Australia",
-    "Germany",
-    "France",
-    "India",
-    "Japan",
-    "China",
-    "Philippines",
-    "Brazil",
-    "Mexico",
-    "Italy",
-    "Spain",
-    "Russia",
-    "South Korea",
-    "South Africa",
-    "Netherlands",
-    "Sweden",
-    "Switzerland",
-    "New Zealand",
-    "Argentina",
-    "Colombia",
-    "Thailand",
-    "Vietnam",
-    "Saudi Arabia",
-    "United Arab Emirates",
-    "Singapore",
-    "Malaysia",
-    "Indonesia",
-    "Egypt",
-    "Turkey",
-    "Pakistan",
-    "Bangladesh",
-    "Nigeria",
-    "Poland",
-    "Ukraine",
-    "Chile",
-    "Portugal",
-    "Greece",
-    "Belgium",
-    "Norway",
-    "Denmark",
-    "Finland",
-    "Ireland",
-    "Austria",
-    "Israel",
-    "Hong Kong",
-    "Taiwan",
-    "Romania",
-    "Hungary"
-];
-
-// Initialize variables (moved outside the validation function)
-$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $unit2 = $blk = $street =
-    $blk2 = $street2 = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province =
-    $country = $zip = $zip2 = $country2 = $subdivision2 = $barangay2 = $city2 = $province2 = $phone2 = $email2 = $tele = $otherStatus = '';
-
-$inputNames = ['nationality', 'religion'];
-
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-$errors = [];
-
-if (!isset($_SESSION['form_data'])) {
-    $_SESSION['form_data'] = [];
-}
-
-$form_data = $_SESSION['form_data'];
-
-// Validation function
-function validate_form_data($data)
-{
-
-    global $countries, $inputNames; // Access global variables
-    $errors = [];
-
-    $last_name      = trim($data['last_name'] ?? '');
-    $first_name     = trim($data['first_name'] ?? '');
-    $middle_name    = trim($data['middle_name'] ?? '');
-    $dob            = trim($data['dob'] ?? '');
-    $gender         = trim($data['gender'] ?? '');
-    $civil_status   = trim($data['civil_status'] ?? '');
-    $nationality    = trim($data['nationality'] ?? '');
-    $religion       = trim($data['religion'] ?? '');
-    $tin            = trim($data['tin'] ?? '');
-    $unit           = trim($data['unit'] ?? '');
-    $unit2          = trim($data['unit2'] ?? '');
-    $blk            = trim($data['blk'] ?? '');
-    $blk2           = trim($data['blk2'] ?? '');
-    $street         = trim($data['street'] ?? '');
-    $street2        = trim($data['street2'] ?? '');
-    $phone          = trim($data['phone'] ?? '');
-    $email          = trim($data['email'] ?? '');
-    $flast          = trim($data['flast'] ?? '');
-    $ffirst         = trim($data['ffirst'] ?? '');
-    $fmiddle        = trim($data['fmiddle'] ?? '');
-    $mlast          = trim($data['mlast'] ?? '');
-    $mfirst         = trim($data['mfirst'] ?? '');
-    $mmiddle        = trim($data['mmiddle'] ?? '');
-    $subdivision    = trim($data['subdivision'] ?? '');
-    $barangay       = trim($data['barangay'] ?? '');
-    $city           = trim($data['city'] ?? '');
-    $subdivision2   = trim($data['subdivision2'] ?? '');
-    $barangay2      = trim($data['barangay2'] ?? '');
-    $city2          = trim($data['city2'] ?? '');
-    $province       = trim($data['province'] ?? '');
-    $country        = trim($data['country'] ?? '');
-    $zip            = trim($data['zip'] ?? '');
-    $province2      = trim($data['province2'] ?? '');
-    $country2       = trim($data['country2'] ?? '');
-    $zip2           = trim($data['zip2'] ?? '');
-    $tele = trim($data['tele'] ?? '');
-    $otherStatus = trim($data['otherStatus'] ?? '');
-    $fields = array_keys($data);
-
-    // Required fields (check for empty values)
-    $required_fields = ['last_name', 'first_name', 'dob', 'gender', 'civil_status', 'nationality', 'religion', 'tin', 'unit', 'blk', 'street', 'subdivision', 'barangay', 'city', 'province', 'country', 'zip', 'unit2', 'blk2', 'street2', 'subdivision2', 'barangay2', 'city2', 'province2', 'country2', 'zip2', 'phone', 'email', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
-
-    foreach ($required_fields as $field) {
-        if (empty($data[$field])) {
-            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required.";
-        }
-    }
-
-    // Name Validations
-    $name_fields = ['last_name', 'first_name', 'flast', 'ffirst', 'fmiddle', 'mlast', 'mfirst', 'mmiddle'];
-    $middle_initial = ['middle_name'];
-    for ($i = 0; $i < count($name_fields); $i++) {
-        $field = $name_fields[$i];
-        if (empty($data[$field]) || preg_match("/^\s+$/", $data[$field])) {
-            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " is required and cannot contain only spaces.";
-        } elseif ($field == 'middle_name' && !preg_match("/^[a-zA-Z\.]*$/", $data[$field])) { // Allow period for middle initial
-            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and a period (for middle initial).";
-        } elseif (!preg_match("/^[a-zA-Z\s]*$/", $data[$field])) { // Reject numbers for other name fields
-            $errors[$field] = ucfirst(str_replace('_', ' ', $field)) . " must contain only letters and spaces.";
-        }
-    }
-
-    // RELIGION AND NATIONALTY
-    for ($j = 0; $j < count($inputNames); $j++) {
-        if (!empty($data[$inputNames[$j]])) {
-            $value = trim($data[$inputNames[$j]]);
-            $isValid = true;
-
-            for ($k = 0; $k < strlen($value); $k++) {
-                if (is_numeric($value[$k])) {
-                    $isValid = false;
-                    break;
-                }
-            }
-
-            if (!$isValid || ctype_space($value)) {
-                $errors[$inputNames[$j]] = ucfirst($inputNames[$j]) . " must contain only letters.";
-            }
-        }
-    }
-
-    // Date of Birth Validation
-    if (empty($data['dob'])) {
-        $errors['dob'] = "Date of Birth is required.";
-    } elseif (strtotime($data['dob']) > strtotime('-18 years')) {
-        $errors['dob'] = "You must be at least 18 years old.";
-    }
-
-    // Gender Validation
-    if (empty($data['gender'])) {
-        $errors['gender'] = "Gender is required.";
-    }
-
-    // Civil Status Validation
-    if (empty($data['civil_status'])) {
-        $errors['civil_status'] = "Civil Status is required.";
-    }
-
-    // If 'Others' is selected
-    if ($data['civil_status'] == 'Others') {
-        if (empty($otherStatus)) {
-            $errors['otherStatus'] = "Please specify your civil status.";
-        } elseif (!preg_match("/^[a-zA-Z\s]+$/", $otherStatus)) {
-            $errors['otherStatus'] = "Civil status must contain only letters.";
-        }
-    }
-
-    // TIN Validation
-    if (empty($data['tin']) || preg_match("/^\s+$/", $data['tin'])) {
-        $errors['tin'] = "Tax Identification No. is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{9,15}$/", $data['tin'])) {
-        $errors['tin'] = "Tax Identification No. must contain only numbers (9-15 digits).";
-    }
-
-    if (!preg_match('/^[0-9]+$/', $data['tin'])) {
-        $errors['tin'] = "TIN must contain only numbers.";
-    }
-
-    // Zip Code Validation
-    if (empty($data['zip']) || preg_match("/^\s+$/", $data['zip'])) {
-        $errors['zip'] = "Zip Code is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{4,6}$/", $data['zip'])) {
-        $errors['zip'] = "Zip Code must contain only 4-6 digits.";
-    }
-
-    if (empty($data['zip2']) || preg_match("/^\s+$/", $data['zip2'])) {
-        $errors['zip2'] = "Zip Code is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{4,6}$/", $data['zip2'])) {
-        $errors['zip2'] = "Zip Code must contain only 4-6 digits.";
-    }
-
-    if (!preg_match('/^[0-9]+$/', $data['zip'])) {
-        $errors['zip'] = "ZIP code must contain only numbers.";
-    }
-
-    if (!preg_match('/^[0-9]+$/', $data['zip2'])) {
-        $errors['zip2'] = "ZIP code must contain only numbers.";
-    }
-
-    // Phone Validation
-    if (empty($data['phone']) || preg_match("/^\s+$/", $data['phone'])) {
-        $errors['phone'] = "Phone no. is required and cannot contain only spaces.";
-    } elseif (!preg_match("/^[0-9]{11}$/", $data['phone'])) {
-        $errors['phone'] = "Phone no. must contain only 11 digits.";
-    }
-
-    if (!preg_match('/^[0-9]+$/', $data['phone'])) {
-        $errors['phone'] = "Phone no. must contain only numbers.";
-    }
-
-    // Telephone Validation
-    if (empty($tele) || preg_match("/^\s+$/", $tele)) {
-        $errors['tele'] = "Telephone no. is required and cannot contain only spaces.";
-    } elseif (!preg_match('/^[0-9]+$/', $tele)) {
-        $errors['tele'] = "Telephone no. must contain only numbers.";
-    } elseif (!preg_match("/^[0-9]{11}$/", $tele)) {
-        $errors['tele'] = "Telephone no. must contain only 11 digits.";
-    }
-
-    // Email Validation
-    if (empty($data['email']) || preg_match("/^\s+$/", $data['email'])) {
-        $errors['email'] = "E-mail Address is required and cannot contain only spaces.";
-    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = "Invalid email format.";
-    }
-
-    // OTHER STATUS
-    if (!empty($otherStatus) && !preg_match("/^[a-zA-Z ]+$/", $otherStatus)) {
-        $errors['otherStatus'] = "Must contain only letters.";
-    }
-    return $errors;
-}
+// Determine current page
+$page = $_GET['page'] ?? 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['form_data'] = $_POST;
-
     // Validate form data
     $errors = validate_form_data($_POST);
-
     // Store errors in session
     $_SESSION['errors'] = $errors;
-
     // Check for page-specific validation result
     $isValidPage = $_POST['isValidPage' . $page] ?? 'true';
     if (!empty($errors) || $isValidPage === 'false') {
@@ -271,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         unset($_SESSION['page_' . $page . '_has_errors']);
     }
-
     if ($page < 4) {
         header("Location: ?page=" . ($page + 1));
         exit();
@@ -282,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
 
 // Retrieve errors and form data from session
 $errors = $_SESSION['errors'] ?? [];
@@ -330,6 +76,8 @@ $tele = $form_data['tele'] ?? '';
 $otherStatus = $form_data['otherStatus'] ?? '';
 ?>
 
+
+
 <select name="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>" style="display: none;">
     <?php for ($i = 0; $i < count($countries); $i++) { ?>
         <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
@@ -338,6 +86,8 @@ $otherStatus = $form_data['otherStatus'] ?? '';
     <?php } ?>
 </select>
 <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
