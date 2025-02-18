@@ -78,47 +78,52 @@ if (isset($_SESSION['form_data'])) {
 </head>
 
 <body>
+    <div class="header1">
+        <img src="pics/F_LOGO.png" class="logo1">
+        <p class="h_label1">Personal Data</p>
+    </div>
     <section class="output_display">
+
         <div class="section-1">
             <div class="container-1">
                 <img src="pics/4.png" class="profile">
                 <div class="wrap-1">
-                    <p><span class="o_name"><?php echo  $last_name . ', ' . $first_name . ' ' . substr($middle_name, 0, 1) . '.'; ?></span></p>
-                    <p><span class="o_status"><?php $status_display; ?></span></p>
+                    <p><span class="o_name"><?php echo  $last_name . ', ' . $first_name . ' ' . substr($middle_name, 0, 1) . '.'; ?> </span></p>
+                    <p><span class="o_status"><?php echo $status_display; ?></span></p>
                 </div>
             </div>
             <div class="container-2">
                 <div class="wrap-2">
                     <label>Age</label>
-                    <p><span class="o_age"><?php $age; ?></span></p>
+                    <p><span class="o_age"><?php echo $age; ?></span></p>
                     <label>Date of Birth</label>
-                    <p><span class="o_dob"><?php $dob; ?></span></p>
+                    <p><span class="o_dob"><?php echo $dob; ?></span></p>
                     <label>Gender</label>
-                    <p><span class="o_sex"><?php $gender; ?></span></p>
+                    <p><span class="o_sex"><?php echo $gender; ?></span></p>
                 </div>
                 <div class="wrap-3">
                     <label>Nationality</label>
-                    <p><span class="o_nationality"><?php $nationality; ?></span></p>
+                    <p><span class="o_nationality"><?php echo $nationality; ?></span></p>
                     <label>Religion</label>
-                    <p><span class="o_religion"><?php $religion; ?></span></p>
+                    <p><span class="o_religion"><?php echo $religion; ?></span></p>
                     <label>TIN</label>
-                    <p><span class="o_tin"><?php $tin; ?></span></p>
+                    <p><span class="o_tin"><?php echo $tin; ?></span></p>
                 </div>
             </div>
             <div class="container-3">
                 <div class="wrap-4">
                     <div class="sub-wrap-4">
                         <label>Phone no.</label>
-                        <p><span class="o_phone"><?php $phone; ?></span></p>
+                        <p><span class="o_phone"><?php echo $phone; ?></span></p>
                     </div>
                     <div class="sub-wrap-5">
                         <label>Telephone no.</label>
-                        <p><span class="o_tele"><?php $tele; ?></span></p>
+                        <p><span class="o_tele"><?php echo $tele; ?></span></p>
                     </div>
                 </div>
                 <div class="wrap-5">
                     <label>Email Address</label>
-                    <p><span class="o_email"><?php $email; ?></span></p>
+                    <p><span class="o_email"><?php echo $email; ?></span></p>
                 </div>
             </div>
         </div>
@@ -129,32 +134,32 @@ if (isset($_SESSION['form_data'])) {
                 <div class="container-4">
                     <div class="separator">
                         <label>Country</label>
-                        <p><span class="o_country"><?php $country; ?></span></p>
+                        <p><span class="o_country"><?php echo $country; ?></span></p>
                     </div>
                     <div class="separator">
                         <label>Province</label>
-                        <p><span class="o_province"><?php $province; ?></span></p>
+                        <p><span class="o_province"><?php echo $province; ?></span></p>
                     </div>
                     <div class="separator">
                         <label>City/Municipality</label>
-                        <p><span class="o_city"><?php $city; ?></span></p>
+                        <p><span class="o_city"><?php echo $city; ?></span></p>
                     </div>
                     <div class="separator">
                         <label>Zip Code</label>
-                        <p><span class="o_zip"><?php $zip; ?></span></p>
+                        <p><span class="o_zip"><?php echo $zip; ?></span></p>
                     </div>
                     <div class="separator">
                         <label>Barangay/District/Locality</label>
-                        <p><span class="o_barangay"><?php $barangay; ?></span></p>
+                        <p><span class="o_barangay"><?php echo $barangay; ?></span></p>
                     </div>
                     <label>Street Name</label>
-                    <p><span class="o_street"><?php $street; ?></span></p>
+                    <p><span class="o_street"><?php echo $street; ?></span></p>
                     <label>Subdivision</label>
-                    <p><span class="o_subdivision"><?php $subdivision; ?></span></p>
+                    <p><span class="o_subdivision"><?php echo $subdivision; ?></span></p>
                     <label>House/Lot & Blk. No.</label>
-                    <p><span class="o_blk"><?php $blk; ?></span></p>
+                    <p><span class="o_blk"><?php echo $blk; ?></span></p>
                     <label>RM/FLR/Unit No. & Bldg. Name</label>
-                    <p><span class="o_unit"><?php $unit; ?></span></p>
+                    <p><span class="o_unit"><?php echo $unit; ?></span></p>
                 </div>
             </div>
         </div>
@@ -164,23 +169,23 @@ if (isset($_SESSION['form_data'])) {
             <div class="container-group">
                 <div class="container-5">
                     <label>Country</label>
-                    <p><span class="o_country1"><?php $country2; ?></span></p>
+                    <p><span class="o_country1"><?php echo $country2; ?></span></p>
                     <label>Province</label>
-                    <p><span class="o_province1"><?php $province2; ?></span></p>
+                    <p><span class="o_province1"><?php echo $province2; ?></span></p>
                     <label>City/Municipality</label>
-                    <p><span class="o_city1"><?php $city2; ?></span></p>
+                    <p><span class="o_city1"><?php echo $city2; ?></span></p>
                     <label>Zip Code</label>
-                    <p><span class="o_zip1"><?php $zip2; ?></span></p>
+                    <p><span class="o_zip1"><?php echo $zip2; ?></span></p>
                     <label>Barangay/District/Locality</label>
-                    <p><span class="o_barangay1"><?php $barangay2; ?></span></p>
+                    <p><span class="o_barangay1"><?php echo $barangay2; ?></span></p>
                     <label>Street Name</label>
-                    <p><span class="o_street1"><?php $street2; ?></span></p>
+                    <p><span class="o_street1"><?php echo $street2; ?></span></p>
                     <label>Subdivision</label>
-                    <p><span class="o_subdivision1"><?php $subdivision2; ?></span></p>
+                    <p><span class="o_subdivision1"><?php echo $subdivision2; ?></span></p>
                     <label>House/Lot & Blk. No.</label>
-                    <p><span class="o_blk1"><?php $blk2; ?></span></p>
+                    <p><span class="o_blk1"><?php echo $blk2; ?></span></p>
                     <label>RM/FLR/Unit No. & Bldg. Name</label>
-                    <p><span class="o_unit1"><?php $unit2; ?></span></p>
+                    <p><span class="o_unit1"><?php echo $unit2; ?></span></p>
                 </div>
             </div>
         </div>
@@ -189,11 +194,11 @@ if (isset($_SESSION['form_data'])) {
             <h3>Parental Information</h3>
             <div class="container-8">
                 <label>Father's Name</label>
-                <p><span class="o_fname"><?php $flast . ', ' . $ffirst . ' ' . substr($fmiddle, 0, 1) . '.'; ?></span></p>
+                <p><span class="o_fname"><?php echo $flast . ', ' . $ffirst . ' ' . substr($fmiddle, 0, 1) . '.'; ?></span></p>
             </div>
             <div class="container-9">
                 <label>Mother's Maiden Name</label>
-                <p><span class="o_mname"><?php $mlast . ', ' . $mfirst . ' ' . substr($mmiddle, 0, 1) . '.'; ?></span></p>
+                <p><span class="o_mname"><?php echo $mlast . ', ' . $mfirst . ' ' . substr($mmiddle, 0, 1) . '.'; ?></span></p>
             </div>
         </div>
     </section>

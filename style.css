@@ -9,20 +9,16 @@
 
 body {
     height: 100%;
-    display: flex;
-    justify-content: center;
     padding: 50px;
-    align-items: center;
     background: #dbeced;
 }
 
 .header  {
     display: flex;
+    justify-content: center;
     flex-direction: row;
     position: relative;
-    bottom: 400px;
-    left: -70px;
-    gap: 10px;
+    gap: 20px;
 }
 
 .logo {
@@ -32,24 +28,23 @@ body {
 
 .h_label {
     margin-block: auto;
-    font-size: 23px;
+    font-size: 30px;
     font-weight: 700;
 }
 
-.main {
-    width: 1500px;
-    height: 800px;
-    padding: 50px;
-    border-radius: 20px;
-    background: white;
-    position: relative;
-    top: 40px;
-    left: -30px;
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 120px;
 }
 
-.label1 {
-    text-align: center;
-    margin: 30px 0 50px 0;;;
+.main {
+    width: 1400px;
+    height: 620px;
+    padding: 50px;
+    position: relative;
+    border-radius: 20px;
+    background: white;
 }
 
 .wrapper {
@@ -62,6 +57,7 @@ body {
 .page1 {
     display: block;
     padding: 10px;
+    margin-top: 40px;
 }
 
 .sublabel1 {
@@ -176,6 +172,7 @@ select {
 .page2 {
     display: none;
     padding: 10px;
+    margin-top: 40px;
 }
 
 .sublabel2 {
@@ -187,7 +184,7 @@ select {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 50px; 
-    row-gap: 30px; 
+    row-gap: 50px; 
 }
 
 .place-grid label {
@@ -213,7 +210,7 @@ select {
 .page3 {
     display: none;
     padding: 10px;
-    margin-top: -25px;
+    margin-top: 10px;
 }
 
 .sublabel3 {
@@ -246,11 +243,12 @@ select {
 .page4 {
     display: none;
     padding: 10px;
+    margin-top: 55px;
 }
 
 .sublabel4 {
     font-size: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .parent-grid {
@@ -317,7 +315,7 @@ input[type=radio] {
     width: 150px;
     padding: 5px;
     position: fixed;
-    margin: 40px 0 0 1120px;
+    margin: 140px 0 0 1120px;
 }
 
 .done, .next {
@@ -363,14 +361,34 @@ input[type=radio].error {
 } 
 
 /*OUTPUT DISPLAY*/
+.header1  {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.logo1 {
+    width: 50px;
+    height: 50px;
+}
+
+.h_label1 {
+    margin-block: auto;
+    font-size: 35px;
+    font-weight: 700;
+}
+
 .output_display {
     width: 1500px;
     height: 755px;
-    margin-top: 20px;
+    display: flex;
+    margin: 70px 0 0 250px;
     padding: 20px;
     /*box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);*/
     overflow: hidden;
-    display: none;
+    display: block;
 }
 
 .section-1 {
@@ -589,4 +607,89 @@ input[type=radio].error {
     display: flex;
     justify-content: space-between;
     gap: 40px;
+}
+
+
+/* PROGRESS CONTAINER */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 850px;
+    position: relative;
+    left: 600px;
+    top: 40px;
+}
+
+/* Full Progress Line (Unfilled + Filled) */
+.progress-container::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 86%;  
+    height: 3px;
+    background-color: #a6c5c7; 
+    transform: translateY(-50%);
+    z-index: -1;
+}
+
+/* Dynamic Filled Progress Line */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--progress-line-width, 0%);
+    height: 3px;
+    background-color: #007b82; 
+    transform: translateY(-50%);
+    transition: width 0.5s ease-in-out;
+    z-index: -1;
+}
+
+/* Individual Steps */
+.progress-step {
+    width: 27px;
+    height: 27px;
+    background-color: #a6c5c7; /* Default color */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    top: 10px;
+    z-index: 1;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Completed Step */
+.progress-step.completed {
+    background-color: #007b82; /* Dark green */
+    transform: scale(1.1);
+}
+
+/* Step with Errors */
+.progress-step.error {
+    background-color: #b22222; /* Red for error */
+}
+
+/* Active Step Title */
+.progress-title {
+    text-align: center;
+    font-size: 12px;
+    color: #a6c5c7; /* Default color */
+    position: relative;
+    top: 25px;
+    left: -30px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Active Step Title with No Errors */
+.progress-title.active {
+    color: #000 !important;
+    font-weight: 500;
 }
