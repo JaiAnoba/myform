@@ -194,11 +194,11 @@ if (isset($_SESSION['form_data'])) {
             <h3>Parental Information</h3>
             <div class="container-8">
                 <label>Father's Name</label>
-                <p><span class="o_fname"><?php echo $flast . ', ' . $ffirst . ' ' . substr($fmiddle, 0, 1) . '.'; ?></span></p>
+                <p><span class="o_fname"><?php echo $flast . ', ' . $ffirst . ' ' . $fmiddle; ?></span></p>
             </div>
             <div class="container-9">
                 <label>Mother's Maiden Name</label>
-                <p><span class="o_mname"><?php echo $mlast . ', ' . $mfirst . ' ' . substr($mmiddle, 0, 1) . '.'; ?></span></p>
+                <p><span class="o_mname"><?php echo $mlast . ', ' . $mfirst . ' ' . $mmiddle; ?></span></p>
             </div>
         </div>
     </section>

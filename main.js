@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStatusDisplay();
     civilStatusSelect.addEventListener('change', updateStatusDisplay);
 
-    // **Update Progress Bar**
+    //Update Progress Bar
     function updateStepProgress(hasErrors) {
         steps.forEach((step, index) => {
             if (index < currentStep) {
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // **Update Active Progress Title**
+        // Update Active Progress Title
         titles.forEach((title, index) => {
             if (index === currentStep) {
                 title.classList.add("active");
@@ -105,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // **Smoothly Adjust Progress Line Width**
+        // Smoothly Adjust Progress Line Width
         const lineWidth = (currentStep / (steps.length - 1)) * 87;
         document.documentElement.style.setProperty('--progress-line-width', lineWidth + "%");
     }
 
-    // **Validate Inputs on Proceed**
+    // Validate Inputs on Proceed
     document.querySelectorAll("#proceed").forEach(button => {
         button.addEventListener("click", () => {
             let inputs = page[currentStep].querySelectorAll("input, select");
