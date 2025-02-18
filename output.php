@@ -6,65 +6,72 @@ function calculateAge($dob)
 {
     $birthDate = new DateTime($dob);
     $today = new DateTime();
-    $age = $today->diff($birthDate)->y;
-    return $age;
+    return $today->diff($birthDate)->y;
 }
 
-// Check if form data exists in the session
+$last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin =
+    $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle =
+    $subdivision = $barangay = $city = $province = $country = $country2 = $zip = $zip2 = $unit2 = $blk2 =
+    $street2 = $subdivision2 = $barangay2 = $city2 = $province2 = $tele = $otherStatus = $age = $status_display = '';
+
+// Checks if form data exists in the session
 if (isset($_SESSION['form_data'])) {
     $formData = $_SESSION['form_data'];
 
-    // Extract form data
-    $last_name = htmlspecialchars($formData['last_name'] ?? '');
-    $first_name = htmlspecialchars($formData['first_name'] ?? '');
-    $middle_name = htmlspecialchars($formData['middle_name'] ?? '');
-    $dob = htmlspecialchars($formData['dob'] ?? '');
-    $gender = htmlspecialchars($formData['gender'] ?? '');
-    $civil_status = htmlspecialchars($formData['civil_status'] ?? '');
-    $nationality = htmlspecialchars($formData['nationality'] ?? '');
-    $religion = htmlspecialchars($formData['religion'] ?? '');
-    $tin = htmlspecialchars($formData['tin'] ?? '');
-    $unit = htmlspecialchars($formData['unit'] ?? '');
-    $blk = htmlspecialchars($formData['blk'] ?? '');
-    $street = htmlspecialchars($formData['street'] ?? '');
-    $phone = htmlspecialchars($formData['phone'] ?? '');
-    $email = htmlspecialchars($formData['email'] ?? '');
-    $flast = htmlspecialchars($formData['flast'] ?? '');
-    $ffirst = htmlspecialchars($formData['ffirst'] ?? '');
-    $fmiddle = htmlspecialchars($formData['fmiddle'] ?? '');
-    $mlast = htmlspecialchars($formData['mlast'] ?? '');
-    $mfirst = htmlspecialchars($formData['mfirst'] ?? '');
-    $mmiddle = htmlspecialchars($formData['mmiddle'] ?? '');
-    $subdivision = htmlspecialchars($formData['subdivision'] ?? '');
-    $barangay = htmlspecialchars($formData['barangay'] ?? '');
-    $city = htmlspecialchars($formData['city'] ?? '');
-    $province = htmlspecialchars($formData['province'] ?? '');
-    $country = htmlspecialchars($formData['country'] ?? '');
-    $country2 = htmlspecialchars($formData['country2'] ?? '');
-    $zip = htmlspecialchars($formData['zip'] ?? '');
-    $zip2 = htmlspecialchars($formData['zip2'] ?? '');
-    $unit2 = htmlspecialchars($formData['unit2'] ?? '');
-    $blk2 = htmlspecialchars($formData['blk2'] ?? '');
-    $street2 = htmlspecialchars($formData['street2'] ?? '');
-    $subdivision2 = htmlspecialchars($formData['subdivision2'] ?? '');
-    $barangay2 = htmlspecialchars($formData['barangay2'] ?? '');
-    $city2 = htmlspecialchars($formData['city2'] ?? '');
-    $province2 = htmlspecialchars($formData['province2'] ?? '');
-    $tele = htmlspecialchars($formData['tele'] ?? '');
-    $otherStatus = htmlspecialchars($formData['otherStatus'] ?? '');
+    // Simplified loop to extract and sanitize form data
+    $fields = [
+        'last_name',
+        'first_name',
+        'middle_name',
+        'dob',
+        'gender',
+        'civil_status',
+        'nationality',
+        'religion',
+        'tin',
+        'unit',
+        'blk',
+        'street',
+        'phone',
+        'email',
+        'flast',
+        'ffirst',
+        'fmiddle',
+        'mlast',
+        'mfirst',
+        'mmiddle',
+        'subdivision',
+        'barangay',
+        'city',
+        'province',
+        'country',
+        'country2',
+        'zip',
+        'zip2',
+        'unit2',
+        'blk2',
+        'street2',
+        'subdivision2',
+        'barangay2',
+        'city2',
+        'province2',
+        'tele',
+        'otherStatus'
+    ];
+
+    foreach ($fields as $field) {
+        $$field = htmlspecialchars($formData[$field] ?? ''); 
+    }
 
     // Calculate age
     $age = calculateAge($dob);
 
     // Determine civil status display
     $status_display = ($civil_status === 'Others' && !empty($otherStatus)) ? htmlspecialchars($otherStatus) : htmlspecialchars($civil_status);
-} else {
-    // Handle case where no form data is available
-    $last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nationality = $religion = $tin = $unit = $blk = $street = $phone = $email = $flast = $ffirst = $fmiddle = $mlast = $mfirst = $mmiddle = $subdivision = $barangay = $city = $province = $country = $country2 = $zip = $zip2 = $unit2 = $blk2 = $street2 = $subdivision2 = $barangay2 = $city2 = $province2 = $tele = $otherStatus = '';
-    $age = '';
-    $status_display = '';
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
