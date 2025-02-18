@@ -365,7 +365,6 @@ input[type=radio].error {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    margin-top: 30px;
     gap: 20px;
 }
 
@@ -384,7 +383,7 @@ input[type=radio].error {
     width: 1500px;
     height: 755px;
     display: flex;
-    margin: 70px 0 0 250px;
+    margin: 50px 0 0 250px;
     padding: 20px;
     /*box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);*/
     overflow: hidden;
@@ -399,7 +398,7 @@ input[type=radio].error {
 
 .section-2 {
     width: 34%;
-    height: 455px;
+    height: 460px;
     float: left;
     margin-left: 10px;
     background: white;
@@ -415,7 +414,7 @@ input[type=radio].error {
 
 .section-3 {
     width: 33%;
-    height: 455px;
+    height: 460px;
     float: right;
     background: #aad6d9;
     padding: 45px;
@@ -432,7 +431,7 @@ input[type=radio].error {
     width: 1005px;
     height: 210px;
     padding: 40px;
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
     border-radius: 15px;
     background: white;
@@ -650,9 +649,9 @@ input[type=radio].error {
 
 /* Individual Steps */
 .progress-step {
-    width: 27px;
-    height: 27px;
-    background-color: #a6c5c7; /* Default color */
+    width: 20px;
+    height: 20px;
+    background-color: #a6c5c7;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -668,20 +667,20 @@ input[type=radio].error {
 
 /* Completed Step */
 .progress-step.completed {
-    background-color: #007b82; /* Dark green */
+    background-color: #007b82; 
     transform: scale(1.1);
 }
 
 /* Step with Errors */
 .progress-step.error {
-    background-color: #b22222; /* Red for error */
+    background-color: #b22222;
 }
 
 /* Active Step Title */
 .progress-title {
     text-align: center;
     font-size: 12px;
-    color: #a6c5c7; /* Default color */
+    color: #a6c5c7; 
     position: relative;
     top: 25px;
     left: -30px;

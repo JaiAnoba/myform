@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // **Smoothly Adjust Progress Line Width**
-        const lineWidth = (currentStep / (steps.length - 1)) * 88;
+        const lineWidth = (currentStep / (steps.length - 1)) * 87;
         document.documentElement.style.setProperty('--progress-line-width', lineWidth + "%");
     }
 
