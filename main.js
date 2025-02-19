@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const landingPage = document.querySelector('.landing_page');
+    const button = document.querySelector('.button');
     const form = document.querySelector('form');
     const currentPage = parseInt(document.getElementById('pageContainer')?.getAttribute('data-page') || "1");
     const doneButton = document.querySelector('.done');
@@ -10,6 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressLine = document.querySelector(".progress-container::before");
     const page = document.querySelectorAll(".form-page");
     let currentStep = currentPage - 1;
+
+    // Initially display the landing page
+    if (landingPage) {
+      landingPage.style.display = 'block'; // Or any other display style you prefer
+    }
+  
+    // Add click event listener to the button
+    if (button) {
+      button.addEventListener('click', () => {
+        // Redirect the user to index.php (page 1)
+        window.location.href = 'index.php?page=1';
+      });
+    }
 
     // Show the current page
     const currentPageElement = document.querySelector('.page' + currentPage);
@@ -137,4 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateStepProgress(false);
+
+    
+
+
+    
 });
