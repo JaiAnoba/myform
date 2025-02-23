@@ -1,6 +1,75 @@
 <?php
 session_start();
 
+include 'db_connector.php';
+
+// Database Insertion
+if ($conn) { // Assuming $conn is your database connection variable from db_connector.php
+
+    $sql = "INSERT INTO personal_data (l_name, f_name, middle_name, f_last, f_first, f_middle, m_last, m_first, m_middle, dob, gender, civil_stat, other_stat, nationality, religion, tin, unit, blk, street, subdivision, brgy, city, province, country, zip, h_unit, h_blk, h_street, h_subdivision, h_brgy, h_city, h_province, h_country, h_zip, phone, tele, email, age) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param(
+            "sssssssssssssssisissssssisissssssiiisi",
+            $l_name,
+            $f_name,
+            $middle_name,
+            $dob,
+            $gender,
+            $civil_stat,
+            $nationality,
+            $religion,
+            $tin,
+            $unit,
+            $blk,
+            $street,
+            $phone,
+            $email,
+            $f_last,
+            $f_first,
+            $f_middle,
+            $m_last,
+            $m_first,
+            $m_middle,
+            $subdivision,
+            $brgy,
+            $city,
+            $province,
+            $country,
+            $country2,
+            $zip,
+            $zip2,
+            $unit2,
+            $blk2,
+            $street2,
+            $subdivision2,
+            $barangay2,
+            $city2,
+            $province2,
+            $tele,
+            $otherStatus,
+            $age
+        );
+
+        if ($stmt->execute()) {
+            echo "<p>Data saved to database successfully!</p>";
+            unset($_SESSION['form_data']);
+        } else {
+            echo "<p>Error saving data: " . $stmt->error . "</p>";
+        }
+
+        $stmt->close();
+    } else {
+        echo "<p>Error preparing statement: " . $conn->error . "</p>";
+    }
+
+    $conn->close();
+} else {
+    echo "<p>Database connection failed.</p>";
+}
+
 // Function to calculate age
 function calculateAge($dob)
 {
@@ -26,41 +95,37 @@ if (isset($_SESSION['form_data'])) {
         'dob',
         'gender',
         'civil_status',
+        'other_stat',
         'nationality',
         'religion',
         'tin',
         'unit',
         'blk',
         'street',
-        'phone',
-        'email',
-        'flast',
-        'ffirst',
-        'fmiddle',
-        'mlast',
-        'mfirst',
-        'mmiddle',
         'subdivision',
-        'barangay',
+        'brgy',
         'city',
         'province',
         'country',
-        'country2',
         'zip',
-        'zip2',
-        'unit2',
-        'blk2',
-        'street2',
-        'subdivision2',
-        'barangay2',
-        'city2',
-        'province2',
+        'h_unit',
+        'h_blk',
+        'h_street',
+        'h_subdivision',
+        'h_brgy',
+        'h_city',
+        'h_province',
+        'h_country',
+        'h_zip',
+        'phone',
         'tele',
-        'otherStatus'
+        'email',
+        'age'
     ];
 
+
     foreach ($fields as $field) {
-        $$field = htmlspecialchars($formData[$field] ?? ''); 
+        $$field = htmlspecialchars($formData[$field] ?? '');
     }
 
     // Calculate age

@@ -2,7 +2,6 @@
 session_start();
 
 include 'validation.php';
-include 'db_connector.php';
 
 // Determine current page
 $page = $_GET['page'] ?? 1;
@@ -20,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         unset($_SESSION['page_' . $page . '_has_errors']);
     }
-    
+
     if ($page < 4) {
         header("Location: ?page=" . ($page + 1));
         exit();
@@ -410,7 +409,7 @@ $otherStatus = $form_data['otherStatus'] ?? '';
     </div>
 
     <section class="OUTPUT_DISPLAY" style="display: none;">
-        <?php include 'output.php'; ?>
+        <?php 'output.php'; ?>
     </section>
 
     <script src="main.js"></script>
