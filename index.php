@@ -2,6 +2,7 @@
 session_start();
 
 include 'validation.php';
+include 'db_connector.php';
 
 // Determine current page
 $page = $_GET['page'] ?? 1;
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         unset($_SESSION['page_' . $page . '_has_errors']);
     }
+    
     if ($page < 4) {
         header("Location: ?page=" . ($page + 1));
         exit();
@@ -103,313 +105,313 @@ $otherStatus = $form_data['otherStatus'] ?? '';
 </head>
 
 <body>
-        <div class="header">
-            <img src="pics/F_LOGO.png" class="logo">
-            <p class="h_label">Personal Data</p>
+    <div class="header">
+        <img src="pics/F_LOGO.png" class="logo">
+        <p class="h_label">Personal Data</p>
+    </div>
+    <!-- Step Progress Bar -->
+    <div class="progress-container">
+        <div class="step">
+            <div class="progress-step" data-step="1">1</div>
+            <p class="progress-title">Personal Details</p>
         </div>
-        <!-- Step Progress Bar -->
-        <div class="progress-container">
-            <div class="step">
-                <div class="progress-step" data-step="1">1</div>
-                <p class="progress-title">Personal Details</p>
-            </div>
-            <div class="step">
-                <div class="progress-step" data-step="2">2</div>
-                <p class="progress-title">Place of Birth</p>
-            </div>
-            <div class="step">
-                <div class="progress-step" data-step="3">3</div>
-                <p class="progress-title">Home Address</p>
-            </div>
-            <div class="step">
-                <div class="progress-step" data-step="4">4</div>
-                <p class="progress-title">Parental Information</p>
-            </div>
+        <div class="step">
+            <div class="progress-step" data-step="2">2</div>
+            <p class="progress-title">Place of Birth</p>
         </div>
-
-        <div class="main-wrapper">
-            <section class="main">
-                <form id="multiStepForm" method="POST" action="?page=<?php echo $page; ?>">
-                    <section class="wrapper" id="pageContainer" data-page="<?php echo $page; ?>">
-                        <!-- Page 1 -->
-                        <div class="page1" style="display: <?php echo ($page == 1) ? 'block' : 'none'; ?>">
-                            <p class="sublabel1"> Personal Information </p>
-
-                            <div class="row1">
-                                <div>
-                                    <label for="lastname">Last Name</label>
-                                    <input type="text" name="last_name" id="lastname" class="<?php echo isset($errors['last_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($last_name); ?>">
-                                    <span class="error"><?php echo isset($errors['last_name']) ? $errors['last_name'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="firstname">First Name</label>
-                                    <input type="text" name="first_name" id="firstname" class="<?php echo isset($errors['first_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($first_name); ?>">
-                                    <span class="error"><?php echo isset($errors['first_name']) ? $errors['first_name'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="middle">Middle Initial</label>
-                                    <input type="text" name="middle_name" id="middle" class="<?php echo isset($errors['middle_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($middle_name); ?>">
-                                    <span class="error"><?php echo isset($errors['middle_name']) ? $errors['middle_name'] : ''; ?></span>
-                                </div>
-                            </div>
-
-                            <!-- Date of Birth -->
-                            <div class="details-grid">
-                                <div>
-                                    <label>Date of Birth</label>
-                                    <input type="date" name="dob" class="<?php echo isset($errors['dob']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($dob); ?>">
-                                    <span class="error"><?php echo isset($errors['dob']) ? $errors['dob'] : ''; ?></span>
-                                </div>
-
-                                <!-- Gender -->
-                                <div>
-                                    <label>Sex</label>
-                                    <div class="sex-options">
-                                        <label><input type="radio" name="gender" value="Male" <?php echo $gender === 'Male' ? 'checked' : ''; ?>> Male</label>
-                                        <label><input type="radio" name="gender" value="Female" <?php echo $gender === 'Female' ? 'checked' : ''; ?>> Female</label>
-                                    </div>
-                                    <span class="error"><?php echo isset($errors['gender']) ? $errors['gender'] : ''; ?></span>
-                                </div>
-
-                                <!-- Civil Status -->
-                                <div class="status-container">
-                                    <label id="civilStatusLabel">Civil Status</label>
-                                    <select id="civilStatus" name="civil_status" class="<?php echo isset($errors['civil_status']) ? 'error' : ''; ?>">
-                                        <option value="Single" <?php echo ($civil_status == "Single") ? "selected" : ""; ?>>Single</option>
-                                        <option value="Married" <?php echo ($civil_status == "Married") ? "selected" : ""; ?>>Married</option>
-                                        <option value="Widowed" <?php echo ($civil_status == "Widowed") ? "selected" : ""; ?>>Widowed</option>
-                                        <option value="Legally Separated" <?php echo ($civil_status == "Legally Separated") ? "selected" : ""; ?>>Legally Separated</option>
-                                        <option value="Others" <?php echo ($civil_status == "Others") ? "selected" : ""; ?>>Others</option>
-                                    </select>
-
-                                    <!-- Hidden input field for "Others" option -->
-                                    <input type="text" id="otherStatus" name="otherStatus" class="<?php echo isset($errors['otherStatus']) ? 'error' : ''; ?>" placeholder="Enter your civil status"
-                                        value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
-                                        style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
-                                    <span class="error"><?php echo isset($errors['otherStatus']) ? $errors['otherStatus'] : ''; ?></span>
-
-                                </div>
-
-                                <!-- Nationality -->
-                                <div>
-                                    <label for="nationality">Nationality</label>
-                                    <input type="text" name="nationality" class="<?php echo isset($errors['nationality']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($nationality); ?>">
-                                    <span class="error"><?php echo isset($errors['nationality']) ? $errors['nationality'] : ''; ?></span>
-                                </div>
-
-                                <!-- Religion -->
-                                <div>
-                                    <label for="religion">Religion</label>
-                                    <input type="text" name="religion" class="<?php echo isset($errors['religion']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($religion); ?>">
-                                    <span class="error"><?php echo isset($errors['religion']) ? $errors['religion'] : ''; ?></span>
-                                </div>
-
-                                <!-- TIN -->
-                                <div>
-                                    <label for="tax">Tax Identification No.</label>
-                                    <input type="text" name="tin" class="<?php echo isset($errors['tin']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tin); ?>">
-                                    <span class="error"><?php echo isset($errors['tin']) ? $errors['tin'] : ''; ?></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Page 2 -->
-                        <div class="page2" style="display: <?php echo ($page == 2) ? 'block' : 'none'; ?>">
-                            <p class="sublabel2"> Place of Birth </p>
-                            <div class="place-grid">
-                                <div>
-                                    <label for="unit">RM/FLR/Unit No. & Bldg. Name</label>
-                                    <input type="text" name="unit" class="<?php echo isset($errors['unit']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($unit); ?>">
-                                    <span class="error"><?php echo isset($errors['unit']) ? $errors['unit'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="blk">House/Lot & Blk. No</label>
-                                    <input type="text" name="blk" class="<?php echo isset($errors['blk']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($blk); ?>">
-                                    <span class="error"><?php echo isset($errors['blk']) ? $errors['blk'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="street">Street Name</label>
-                                    <input type="text" name="street" class="<?php echo isset($errors['street']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street); ?>">
-                                    <span class="error"><?php echo isset($errors['street']) ? $errors['street'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="subdivision">Subdivision</label>
-                                    <input type="text" name="subdivision" class="<?php echo isset($errors['subdivision']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
-                                    <span class="error"><?php echo isset($errors['subdivision']) ? $errors['subdivision'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="barangay">Barangay/District/Locality</label>
-                                    <input type="text" name="barangay" class="<?php echo isset($errors['barangay']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
-                                    <span class="error"><?php echo isset($errors['barangay']) ? $errors['barangay'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="city">City/Municipality</label>
-                                    <input type="text" name="city" class="<?php echo isset($errors['city']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
-                                    <span class="error"><?php echo isset($errors['city']) ? $errors['city'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="province">Province</label>
-                                    <input type="text" name="province" class="<?php echo isset($errors['province']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
-                                    <span class="error"><?php echo isset($errors['province']) ? $errors['province'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="country">Country</label>
-                                    <select name="country" id="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?>">
-                                        <?php for ($i = 0; $i < count($countries); $i++) { ?>
-                                            <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
-                                                <?php echo $countries[$i]; ?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
-                                    <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="zip">Zip Code</label>
-                                    <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
-                                    <span class="error"><?php echo isset($errors['zip']) ? $errors['zip'] : ''; ?></span>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- Page 3 -->
-                        <div class="page3" style="display: <?php echo ($page == 3) ? 'block' : 'none'; ?>">
-                            <p class="sublabel3"> Home Address </p>
-                            <div class="address-grid">
-                                <div>
-                                    <label for="unit">RM/FLR/Unit No. & Bldg. Name</label>
-                                    <input type="text" name="unit2" class="<?php echo isset($errors['unit2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($unit2); ?>">
-                                    <span class="error"><?php echo isset($errors['unit2']) ? $errors['unit2'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="blk2">House/Lot & Blk. No</label>
-                                    <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>"
-                                        value="<?php echo htmlspecialchars($blk2, ENT_QUOTES, 'UTF-8'); ?>">
-                                    <span class="error"><?php echo isset($errors['blk2']) ? $errors['blk2'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="street2">Street Name</label>
-                                    <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>"
-                                        value="<?php echo htmlspecialchars($street2, ENT_QUOTES, 'UTF-8'); ?>">
-                                    <span class="error"><?php echo isset($errors['street2']) ? $errors['street2'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="subdivision">Subdivision</label>
-                                    <input type="text" name="subdivision2" class="<?php echo isset($errors['subdivision2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision2); ?>">
-                                    <span class="error"><?php echo isset($errors['subdivision2']) ? $errors['subdivision2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="barangay">Barangay/District/Locality</label>
-                                    <input type="text" name="barangay2" class="<?php echo isset($errors['barangay2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay2); ?>">
-                                    <span class="error"><?php echo isset($errors['barangay2']) ? $errors['barangay2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="city">City/Municipality</label>
-                                    <input type="text" name="city2" class="<?php echo isset($errors['city2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city2); ?>">
-                                    <span class="error"><?php echo isset($errors['city2']) ? $errors['city2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="province">Province</label>
-                                    <input type="text" name="province2" class="<?php echo isset($errors['province2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province2); ?>">
-                                    <span class="error"><?php echo isset($errors['province2']) ? $errors['province2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="country">Country</label>
-                                    <select name="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
-                                        <?php for ($i = 0; $i < count($countries); $i++) { ?>
-                                            <option value="<?php echo $countries[$i]; ?>" <?php echo ($country2 == $countries[$i]) ? 'selected' : ''; ?>>
-                                                <?php echo $countries[$i]; ?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
-                                    <span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="zip">Zip Code</label>
-                                    <input type="text" name="zip2" class="<?php echo isset($errors['zip2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip2); ?>">
-                                    <span class="error"><?php echo isset($errors['zip2']) ? $errors['zip2'] : ''; ?></span>
-                                </div>
-
-                                <div>
-                                    <label for="phone">Phone No.</label>
-                                    <input type="text" name="phone" class="<?php echo isset($errors['phone']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($phone); ?>">
-                                    <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="email">E-mail Address</label>
-                                    <input type="text" name="email" class="<?php echo isset($errors['email']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($email); ?>">
-                                    <span class="error"><?php echo isset($errors['email']) ? $errors['email'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="tele">Telephone</label>
-                                    <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
-                                    <span class="error"><?php echo isset($errors['tele']) ? $errors['tele'] : ''; ?></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Page 4 -->
-                        <div class="page4" style="display: <?php echo ($page == 4) ? 'block' : 'none'; ?>">
-                            <p class="sublabel4"> Parental Information </p>
-                            <div class="parent-grid">
-                                <p class="section-label">Father's Name</p>
-                                <div>
-                                    <label for="flast">Last Name</label>
-                                    <input type="text" name="flast" class="<?php echo isset($errors['flast']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($flast); ?>">
-                                    <span class="error"><?php echo isset($errors['flast']) ? $errors['flast'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="ffirst">First Name</label>
-                                    <input type="text" name="ffirst" class="<?php echo isset($errors['ffirst']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($ffirst); ?>">
-                                    <span class="error"><?php echo isset($errors['ffirst']) ? $errors['ffirst'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="fmiddle">Middle Name</label>
-                                    <input type="text" name="fmiddle" class="<?php echo isset($errors['fmiddle']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($fmiddle); ?>">
-                                    <span class="error"><?php echo isset($errors['fmiddle']) ? $errors['fmiddle'] : ''; ?></span>
-                                </div>
-
-                                <p class="section-label1">Mother's Maiden Name</p>
-                                <div>
-                                    <label for="mlast">Last Name</label>
-                                    <input type="text" name="mlast" class="<?php echo isset($errors['mlast']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mlast); ?>">
-                                    <span class="error"><?php echo isset($errors['mlast']) ? $errors['mlast'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="mfirst">First Name</label>
-                                    <input type="text" name="mfirst" class="<?php echo isset($errors['mfirst']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mfirst); ?>">
-                                    <span class="error"><?php echo isset($errors['mfirst']) ? $errors['mfirst'] : ''; ?></span>
-                                </div>
-                                <div>
-                                    <label for="mmiddle">Middle Name</label>
-                                    <input type="text" name="mmiddle" class="<?php echo isset($errors['mmiddle']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mmiddle); ?>">
-                                    <span class="error"><?php echo isset($errors['mmiddle']) ? $errors['mmiddle'] : ''; ?></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="btn"><button type="submit" class="next">Proceed</button></div>
-                        <div class="btn1"><button type="submit" class="done">Submit</button></div>
-
-                    </section>
-                </form>
-            </section>
+        <div class="step">
+            <div class="progress-step" data-step="3">3</div>
+            <p class="progress-title">Home Address</p>
         </div>
+        <div class="step">
+            <div class="progress-step" data-step="4">4</div>
+            <p class="progress-title">Parental Information</p>
+        </div>
+    </div>
 
-        <section class="OUTPUT_DISPLAY" style="display: none;">
-            <?php 'output.php'; ?>
+    <div class="main-wrapper">
+        <section class="main">
+            <form id="multiStepForm" method="POST" action="?page=<?php echo $page; ?>">
+                <section class="wrapper" id="pageContainer" data-page="<?php echo $page; ?>">
+                    <!-- Page 1 -->
+                    <div class="page1" style="display: <?php echo ($page == 1) ? 'block' : 'none'; ?>">
+                        <p class="sublabel1"> Personal Information </p>
+
+                        <div class="row1">
+                            <div>
+                                <label for="lastname">Last Name</label>
+                                <input type="text" name="last_name" id="lastname" class="<?php echo isset($errors['last_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($last_name); ?>">
+                                <span class="error"><?php echo isset($errors['last_name']) ? $errors['last_name'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="firstname">First Name</label>
+                                <input type="text" name="first_name" id="firstname" class="<?php echo isset($errors['first_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($first_name); ?>">
+                                <span class="error"><?php echo isset($errors['first_name']) ? $errors['first_name'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="middle">Middle Initial</label>
+                                <input type="text" name="middle_name" id="middle" class="<?php echo isset($errors['middle_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($middle_name); ?>">
+                                <span class="error"><?php echo isset($errors['middle_name']) ? $errors['middle_name'] : ''; ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="details-grid">
+                            <div>
+                                <label>Date of Birth</label>
+                                <input type="date" name="dob" class="<?php echo isset($errors['dob']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($dob); ?>">
+                                <span class="error"><?php echo isset($errors['dob']) ? $errors['dob'] : ''; ?></span>
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label>Sex</label>
+                                <div class="sex-options">
+                                    <label><input type="radio" name="gender" value="Male" <?php echo $gender === 'Male' ? 'checked' : ''; ?>> Male</label>
+                                    <label><input type="radio" name="gender" value="Female" <?php echo $gender === 'Female' ? 'checked' : ''; ?>> Female</label>
+                                </div>
+                                <span class="error"><?php echo isset($errors['gender']) ? $errors['gender'] : ''; ?></span>
+                            </div>
+
+                            <!-- Civil Status -->
+                            <div class="status-container">
+                                <label id="civilStatusLabel">Civil Status</label>
+                                <select id="civilStatus" name="civil_status" class="<?php echo isset($errors['civil_status']) ? 'error' : ''; ?>">
+                                    <option value="Single" <?php echo ($civil_status == "Single") ? "selected" : ""; ?>>Single</option>
+                                    <option value="Married" <?php echo ($civil_status == "Married") ? "selected" : ""; ?>>Married</option>
+                                    <option value="Widowed" <?php echo ($civil_status == "Widowed") ? "selected" : ""; ?>>Widowed</option>
+                                    <option value="Legally Separated" <?php echo ($civil_status == "Legally Separated") ? "selected" : ""; ?>>Legally Separated</option>
+                                    <option value="Others" <?php echo ($civil_status == "Others") ? "selected" : ""; ?>>Others</option>
+                                </select>
+
+                                <!-- Hidden input field for "Others" option -->
+                                <input type="text" id="otherStatus" name="otherStatus" class="<?php echo isset($errors['otherStatus']) ? 'error' : ''; ?>" placeholder="Enter your civil status"
+                                    value="<?php echo ($civil_status == 'Others') ? htmlspecialchars($otherStatus) : ''; ?>"
+                                    style="display: <?php echo ($civil_status == 'Others') ? 'inline-block' : 'none'; ?>;">
+                                <span class="error"><?php echo isset($errors['otherStatus']) ? $errors['otherStatus'] : ''; ?></span>
+
+                            </div>
+
+                            <!-- Nationality -->
+                            <div>
+                                <label for="nationality">Nationality</label>
+                                <input type="text" name="nationality" class="<?php echo isset($errors['nationality']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($nationality); ?>">
+                                <span class="error"><?php echo isset($errors['nationality']) ? $errors['nationality'] : ''; ?></span>
+                            </div>
+
+                            <!-- Religion -->
+                            <div>
+                                <label for="religion">Religion</label>
+                                <input type="text" name="religion" class="<?php echo isset($errors['religion']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($religion); ?>">
+                                <span class="error"><?php echo isset($errors['religion']) ? $errors['religion'] : ''; ?></span>
+                            </div>
+
+                            <!-- TIN -->
+                            <div>
+                                <label for="tax">Tax Identification No.</label>
+                                <input type="text" name="tin" class="<?php echo isset($errors['tin']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tin); ?>">
+                                <span class="error"><?php echo isset($errors['tin']) ? $errors['tin'] : ''; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page 2 -->
+                    <div class="page2" style="display: <?php echo ($page == 2) ? 'block' : 'none'; ?>">
+                        <p class="sublabel2"> Place of Birth </p>
+                        <div class="place-grid">
+                            <div>
+                                <label for="unit">RM/FLR/Unit No. & Bldg. Name</label>
+                                <input type="text" name="unit" class="<?php echo isset($errors['unit']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($unit); ?>">
+                                <span class="error"><?php echo isset($errors['unit']) ? $errors['unit'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="blk">House/Lot & Blk. No</label>
+                                <input type="text" name="blk" class="<?php echo isset($errors['blk']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($blk); ?>">
+                                <span class="error"><?php echo isset($errors['blk']) ? $errors['blk'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="street">Street Name</label>
+                                <input type="text" name="street" class="<?php echo isset($errors['street']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($street); ?>">
+                                <span class="error"><?php echo isset($errors['street']) ? $errors['street'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="subdivision">Subdivision</label>
+                                <input type="text" name="subdivision" class="<?php echo isset($errors['subdivision']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision); ?>">
+                                <span class="error"><?php echo isset($errors['subdivision']) ? $errors['subdivision'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="barangay">Barangay/District/Locality</label>
+                                <input type="text" name="barangay" class="<?php echo isset($errors['barangay']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay); ?>">
+                                <span class="error"><?php echo isset($errors['barangay']) ? $errors['barangay'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="city">City/Municipality</label>
+                                <input type="text" name="city" class="<?php echo isset($errors['city']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city); ?>">
+                                <span class="error"><?php echo isset($errors['city']) ? $errors['city'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="province">Province</label>
+                                <input type="text" name="province" class="<?php echo isset($errors['province']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province); ?>">
+                                <span class="error"><?php echo isset($errors['province']) ? $errors['province'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="country">Country</label>
+                                <select name="country" id="country" class="<?php echo isset($errors['country']) ? 'error' : ''; ?>">
+                                    <?php for ($i = 0; $i < count($countries); $i++) { ?>
+                                        <option value="<?php echo $countries[$i]; ?>" <?php echo ($country == $countries[$i]) ? 'selected' : ''; ?>>
+                                            <?php echo $countries[$i]; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                                <span class="error"><?php echo isset($errors['country']) ? $errors['country'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="zip">Zip Code</label>
+                                <input type="text" name="zip" class="<?php echo isset($errors['zip']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip); ?>">
+                                <span class="error"><?php echo isset($errors['zip']) ? $errors['zip'] : ''; ?></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Page 3 -->
+                    <div class="page3" style="display: <?php echo ($page == 3) ? 'block' : 'none'; ?>">
+                        <p class="sublabel3"> Home Address </p>
+                        <div class="address-grid">
+                            <div>
+                                <label for="unit">RM/FLR/Unit No. & Bldg. Name</label>
+                                <input type="text" name="unit2" class="<?php echo isset($errors['unit2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($unit2); ?>">
+                                <span class="error"><?php echo isset($errors['unit2']) ? $errors['unit2'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="blk2">House/Lot & Blk. No</label>
+                                <input type="text" name="blk2" class="<?php echo isset($errors['blk2']) ? 'error' : ''; ?>"
+                                    value="<?php echo htmlspecialchars($blk2, ENT_QUOTES, 'UTF-8'); ?>">
+                                <span class="error"><?php echo isset($errors['blk2']) ? $errors['blk2'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="street2">Street Name</label>
+                                <input type="text" name="street2" class="<?php echo isset($errors['street2']) ? 'error' : ''; ?>"
+                                    value="<?php echo htmlspecialchars($street2, ENT_QUOTES, 'UTF-8'); ?>">
+                                <span class="error"><?php echo isset($errors['street2']) ? $errors['street2'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="subdivision">Subdivision</label>
+                                <input type="text" name="subdivision2" class="<?php echo isset($errors['subdivision2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($subdivision2); ?>">
+                                <span class="error"><?php echo isset($errors['subdivision2']) ? $errors['subdivision2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="barangay">Barangay/District/Locality</label>
+                                <input type="text" name="barangay2" class="<?php echo isset($errors['barangay2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($barangay2); ?>">
+                                <span class="error"><?php echo isset($errors['barangay2']) ? $errors['barangay2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="city">City/Municipality</label>
+                                <input type="text" name="city2" class="<?php echo isset($errors['city2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($city2); ?>">
+                                <span class="error"><?php echo isset($errors['city2']) ? $errors['city2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="province">Province</label>
+                                <input type="text" name="province2" class="<?php echo isset($errors['province2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($province2); ?>">
+                                <span class="error"><?php echo isset($errors['province2']) ? $errors['province2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="country">Country</label>
+                                <select name="country2" class="<?php echo isset($errors['country2']) ? 'error' : ''; ?> <?php echo ($page != 3) ? 'hide-country' : ''; ?>">
+                                    <?php for ($i = 0; $i < count($countries); $i++) { ?>
+                                        <option value="<?php echo $countries[$i]; ?>" <?php echo ($country2 == $countries[$i]) ? 'selected' : ''; ?>>
+                                            <?php echo $countries[$i]; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                                <span class="error"><?php echo isset($errors['country2']) ? $errors['country2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="zip">Zip Code</label>
+                                <input type="text" name="zip2" class="<?php echo isset($errors['zip2']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($zip2); ?>">
+                                <span class="error"><?php echo isset($errors['zip2']) ? $errors['zip2'] : ''; ?></span>
+                            </div>
+
+                            <div>
+                                <label for="phone">Phone No.</label>
+                                <input type="text" name="phone" class="<?php echo isset($errors['phone']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($phone); ?>">
+                                <span class="error"><?php echo isset($errors['phone']) ? $errors['phone'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="email">E-mail Address</label>
+                                <input type="text" name="email" class="<?php echo isset($errors['email']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($email); ?>">
+                                <span class="error"><?php echo isset($errors['email']) ? $errors['email'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="tele">Telephone</label>
+                                <input type="text" name="tele" class="<?php echo isset($errors['tele']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($tele); ?>">
+                                <span class="error"><?php echo isset($errors['tele']) ? $errors['tele'] : ''; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page 4 -->
+                    <div class="page4" style="display: <?php echo ($page == 4) ? 'block' : 'none'; ?>">
+                        <p class="sublabel4"> Parental Information </p>
+                        <div class="parent-grid">
+                            <p class="section-label">Father's Name</p>
+                            <div>
+                                <label for="flast">Last Name</label>
+                                <input type="text" name="flast" class="<?php echo isset($errors['flast']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($flast); ?>">
+                                <span class="error"><?php echo isset($errors['flast']) ? $errors['flast'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="ffirst">First Name</label>
+                                <input type="text" name="ffirst" class="<?php echo isset($errors['ffirst']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($ffirst); ?>">
+                                <span class="error"><?php echo isset($errors['ffirst']) ? $errors['ffirst'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="fmiddle">Middle Name</label>
+                                <input type="text" name="fmiddle" class="<?php echo isset($errors['fmiddle']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($fmiddle); ?>">
+                                <span class="error"><?php echo isset($errors['fmiddle']) ? $errors['fmiddle'] : ''; ?></span>
+                            </div>
+
+                            <p class="section-label1">Mother's Maiden Name</p>
+                            <div>
+                                <label for="mlast">Last Name</label>
+                                <input type="text" name="mlast" class="<?php echo isset($errors['mlast']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mlast); ?>">
+                                <span class="error"><?php echo isset($errors['mlast']) ? $errors['mlast'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="mfirst">First Name</label>
+                                <input type="text" name="mfirst" class="<?php echo isset($errors['mfirst']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mfirst); ?>">
+                                <span class="error"><?php echo isset($errors['mfirst']) ? $errors['mfirst'] : ''; ?></span>
+                            </div>
+                            <div>
+                                <label for="mmiddle">Middle Name</label>
+                                <input type="text" name="mmiddle" class="<?php echo isset($errors['mmiddle']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($mmiddle); ?>">
+                                <span class="error"><?php echo isset($errors['mmiddle']) ? $errors['mmiddle'] : ''; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn"><button type="submit" class="next">Proceed</button></div>
+                    <div class="btn1"><button type="submit" class="done">Submit</button></div>
+
+                </section>
+            </form>
         </section>
+    </div>
+
+    <section class="OUTPUT_DISPLAY" style="display: none;">
+        <?php include 'output.php'; ?>
+    </section>
 
     <script src="main.js"></script>
 
