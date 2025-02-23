@@ -8,11 +8,13 @@ $page = $_GET['page'] ?? 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['form_data'] = $_POST;
-    // Validate form data
+    header("Location: output.php");
+    exit;
+
     $errors = validate_form_data($_POST);
-    
+
     $_SESSION['errors'] = $errors;
-    // Check for page-specific validation result
+
     $isValidPage = $_POST['isValidPage' . $page] ?? 'true';
     if (!empty($errors) || $isValidPage === 'false') {
         $_SESSION['page_' . $page . '_has_errors'] = true;
@@ -139,7 +141,7 @@ $otherStatus = $form_data['otherStatus'] ?? '';
                         <div class="row1">
                             <div>
                                 <label for="lastname">Last Name</label>
-                                <input type="text" name="last_name" id="lastname" class="<?php echo isset($errors['last_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($last_name); ?>">
+                                <input type="text" name="last_name" id="last_name" class="<?php echo isset($errors['last_name']) ? 'error' : ''; ?>" value="<?php echo htmlspecialchars($last_name); ?>">
                                 <span class="error"><?php echo isset($errors['last_name']) ? $errors['last_name'] : ''; ?></span>
                             </div>
 

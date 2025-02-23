@@ -15,13 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initially display the landing page
     if (landingPage) {
-      landingPage.style.display = 'block'; // Or any other display style you prefer
+      landingPage.style.display = 'block'; 
     }
   
-    // Add click event listener to the button
     if (button) {
       button.addEventListener('click', () => {
-        // Redirect the user to index.php (page 1)
         window.location.href = 'index.php?page=1';
       });
     }

@@ -11,8 +11,199 @@ if ($conn) {
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
+        if (isset($_SESSION['form_data']['last_name'])) {
+            $last_name = htmlspecialchars($_SESSION['form_data']['last_name']);
+        } else {
+            $last_name = '';
+        }
+        if (isset($_SESSION['form_data']['first_name'])) {
+            $first_name = htmlspecialchars($_SESSION['form_data']['first_name']);
+        } else {
+            $first_name = '';
+        }
+        if (isset($_SESSION['form_data']['middle_name'])) {
+            $middle_name = htmlspecialchars($_SESSION['form_data']['middle_name']);
+        } else {
+            $middle_name = '';
+        }
+        if (isset($_SESSION['form_data']['flast'])) {
+            $flast = htmlspecialchars($_SESSION['form_data']['flast']);
+        } else {
+            $flast = '';
+        }
+        if (isset($_SESSION['form_data']['ffirst'])) {
+            $ffirst = htmlspecialchars($_SESSION['form_data']['ffirst']);
+        } else {
+            $ffirst = '';
+        }
+        if (isset($_SESSION['form_data']['fmiddle'])) {
+            $fmiddle = htmlspecialchars($_SESSION['form_data']['fmiddle']);
+        } else {
+            $fmiddle = '';
+        }
+        if (isset($_SESSION['form_data']['mlast'])) {
+            $mlast = htmlspecialchars($_SESSION['form_data']['mlast']);
+        } else {
+            $mlast = '';
+        }
+        if (isset($_SESSION['form_data']['mfirst'])) {
+            $mfirst = htmlspecialchars($_SESSION['form_data']['mfirst']);
+        } else {
+            $mfirst = '';
+        }
+        if (isset($_SESSION['form_data']['mmiddle'])) {
+            $mmiddle = htmlspecialchars($_SESSION['form_data']['mmiddle']);
+        } else {
+            $mmiddle = '';
+        }
+        if (isset($_SESSION['form_data']['dob'])) {
+            $dob = htmlspecialchars($_SESSION['form_data']['dob']);
+        } else {
+            $dob = '';
+        }
+        if (isset($_SESSION['form_data']['gender'])) {
+            $gender = htmlspecialchars($_SESSION['form_data']['gender']);
+        } else {
+            $gender = '';
+        }
+        if (isset($_SESSION['form_data']['civil_status'])) {
+            $civil_status = htmlspecialchars($_SESSION['form_data']['civil_status']);
+        } else {
+            $civil_status = '';
+        }
+        if (isset($_SESSION['form_data']['otherStatus'])) {
+            $otherStatus = htmlspecialchars($_SESSION['form_data']['otherStatus']);
+        } else {
+            $otherStatus = '';
+        }
+        if (isset($_SESSION['form_data']['nationality'])) {
+            $nationality = htmlspecialchars($_SESSION['form_data']['nationality']);
+        } else {
+            $nationality = '';
+        }
+        if (isset($_SESSION['form_data']['religion'])) {
+            $religion = htmlspecialchars($_SESSION['form_data']['religion']);
+        } else {
+            $religion = '';
+        }
+        if (isset($_SESSION['form_data']['tin'])) {
+            $tin = htmlspecialchars($_SESSION['form_data']['tin']);
+        } else {
+            $tin = '';
+        }
+        if (isset($_SESSION['form_data']['unit'])) {
+            $unit = htmlspecialchars($_SESSION['form_data']['unit']);
+        } else {
+            $unit = '';
+        }
+        if (isset($_SESSION['form_data']['blk'])) {
+            $blk = htmlspecialchars($_SESSION['form_data']['blk']);
+        } else {
+            $blk = '';
+        }
+        if (isset($_SESSION['form_data']['street'])) {
+            $street = htmlspecialchars($_SESSION['form_data']['street']);
+        } else {
+            $street = '';
+        }
+        if (isset($_SESSION['form_data']['subdivision'])) {
+            $subdivision = htmlspecialchars($_SESSION['form_data']['subdivision']);
+        } else {
+            $subdivision = '';
+        }
+        if (isset($_SESSION['form_data']['brgy'])) {
+            $brgy = htmlspecialchars($_SESSION['form_data']['brgy']);
+        } else {
+            $brgy = '';
+        }
+        if (isset($_SESSION['form_data']['city'])) {
+            $city = htmlspecialchars($_SESSION['form_data']['city']);
+        } else {
+            $city = '';
+        }
+        if (isset($_SESSION['form_data']['province'])) {
+            $province = htmlspecialchars($_SESSION['form_data']['province']);
+        } else {
+            $province = '';
+        }
+        if (isset($_SESSION['form_data']['country'])) {
+            $country = htmlspecialchars($_SESSION['form_data']['country']);
+        } else {
+            $country = '';
+        }
+        if (isset($_SESSION['form_data']['zip'])) {
+            $zip = htmlspecialchars($_SESSION['form_data']['zip']);
+        } else {
+            $zip = '';
+        }
+        if (isset($_SESSION['form_data']['unit2'])) {
+            $unit2 = htmlspecialchars($_SESSION['form_data']['unit2']);
+        } else {
+            $unit2 = '';
+        }
+        if (isset($_SESSION['form_data']['blk2'])) {
+            $blk2 = htmlspecialchars($_SESSION['form_data']['blk2']);
+        } else {
+            $blk2 = '';
+        }
+        if (isset($_SESSION['form_data']['street2'])) {
+            $street2 = htmlspecialchars($_SESSION['form_data']['street2']);
+        } else {
+            $street2 = '';
+        }
+        if (isset($_SESSION['form_data']['subdivision2'])) {
+            $subdivision2 = htmlspecialchars($_SESSION['form_data']['subdivision2']);
+        } else {
+            $subdivision2 = '';
+        }
+        if (isset($_SESSION['form_data']['barangay2'])) {
+            $barangay2 = htmlspecialchars($_SESSION['form_data']['barangay2']);
+        } else {
+            $barangay2 = '';
+        }
+        if (isset($_SESSION['form_data']['city2'])) {
+            $city2 = htmlspecialchars($_SESSION['form_data']['city2']);
+        } else {
+            $city2 = '';
+        }
+        if (isset($_SESSION['form_data']['province2'])) {
+            $province2 = htmlspecialchars($_SESSION['form_data']['province2']);
+        } else {
+            $province2 = '';
+        }
+        if (isset($_SESSION['form_data']['country2'])) {
+            $country2 = htmlspecialchars($_SESSION['form_data']['country2']);
+        } else {
+            $country2 = '';
+        }
+        if (isset($_SESSION['form_data']['zip2'])) {
+            $zip2 = htmlspecialchars($_SESSION['form_data']['zip2']);
+        } else {
+            $zip2 = '';
+        }
+        if (isset($_SESSION['form_data']['phone'])) {
+            $phone = htmlspecialchars($_SESSION['form_data']['phone']);
+        } else {
+            $phone = '';
+        }
+        if (isset($_SESSION['form_data']['tele'])) {
+            $tele = htmlspecialchars($_SESSION['form_data']['tele']);
+        } else {
+            $tele = '';
+        }
+        if (isset($_SESSION['form_data']['email'])) {
+            $email = htmlspecialchars($_SESSION['form_data']['email']);
+        } else {
+            $email = '';
+        }
+        if (isset($_SESSION['form_data']['age'])) {
+            $age = htmlspecialchars($_SESSION['form_data']['age']);
+        } else {
+            $age = '';
+        }
+
         $stmt->bind_param(
-            "sssssssssssssssisissssssisissssssiiisi",
+            "sssssssssssssssissssssssissssssssiiisi",
             $last_name,
             $first_name,
             $middle_name,
@@ -54,21 +245,30 @@ if ($conn) {
         );
 
         if ($stmt->execute()) {
-            echo "<p>Data saved to database successfully!</p>";
+            echo "
+
+Data saved to database successfully!";
             unset($_SESSION['form_data']);
         } else {
-            echo "<p>Error saving data: " . $stmt->error . "</p>";
+            echo "
+
+Error saving data: " . $stmt->error . "";
         }
 
         $stmt->close();
     } else {
-        echo "<p>Error preparing statement: " . $conn->error . "</p>";
-    }
+        echo "
 
-    $conn->close();
+Error preparing statement: " . $conn->error . "";
+    }
 } else {
-    echo "<p>Database connection failed.</p>";
+    echo "
+
+No form data found in session.";
 }
+$conn->close();
+
+
 
 // Function to calculate age
 function calculateAge($dob)
