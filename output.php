@@ -4,43 +4,40 @@ session_start();
 include 'db_connector.php';
 
 // Database Insertion
-if ($conn) { // Assuming $conn is your database connection variable from db_connector.php
+if ($conn) {
 
-    $sql = "INSERT INTO personal_data (l_name, f_name, middle_name, f_last, f_first, f_middle, m_last, m_first, m_middle, dob, gender, civil_stat, other_stat, nationality, religion, tin, unit, blk, street, subdivision, brgy, city, province, country, zip, h_unit, h_blk, h_street, h_subdivision, h_brgy, h_city, h_province, h_country, h_zip, phone, tele, email, age) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO personal_data (last_name, first_name, middle_name, flast, ffirst, fmiddle, mlast, mfirst, mmiddle, dob, gender, civil_status, otherStatus, nationality, religion, tin, unit, blk, street, subdivision, barangay, city, province, country, zip, unit2, blk2, street2, subdivision2, barangay2, city2, province2, country2, zip2, phone, tele, email, age) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
         $stmt->bind_param(
             "sssssssssssssssisissssssisissssssiiisi",
-            $l_name,
-            $f_name,
+            $last_name,
+            $first_name,
             $middle_name,
+            $flast,
+            $ffirst,
+            $fmiddle,
+            $mlast,
+            $mfirst,
+            $mmiddle,
             $dob,
             $gender,
-            $civil_stat,
+            $civil_status,
+            $otherStatus,
             $nationality,
             $religion,
             $tin,
             $unit,
             $blk,
             $street,
-            $phone,
-            $email,
-            $f_last,
-            $f_first,
-            $f_middle,
-            $m_last,
-            $m_first,
-            $m_middle,
             $subdivision,
             $brgy,
             $city,
             $province,
             $country,
-            $country2,
             $zip,
-            $zip2,
             $unit2,
             $blk2,
             $street2,
@@ -48,8 +45,11 @@ if ($conn) { // Assuming $conn is your database connection variable from db_conn
             $barangay2,
             $city2,
             $province2,
+            $country2,
+            $zip2,
+            $phone,
             $tele,
-            $otherStatus,
+            $email,
             $age
         );
 
@@ -130,6 +130,7 @@ if (isset($_SESSION['form_data'])) {
 
     // Calculate age
     $age = calculateAge($dob);
+    $dob = date("Y-m-d", strtotime($dob));
 
     // Determine civil status display
     $status_display = ($civil_status === 'Others' && !empty($otherStatus)) ? htmlspecialchars($otherStatus) : htmlspecialchars($civil_status);

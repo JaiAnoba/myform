@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['form_data'] = $_POST;
     // Validate form data
     $errors = validate_form_data($_POST);
-    // Store errors in session
+    
     $_SESSION['errors'] = $errors;
     // Check for page-specific validation result
     $isValidPage = $_POST['isValidPage' . $page] ?? 'true';
