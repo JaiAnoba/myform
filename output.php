@@ -247,12 +247,12 @@ if ($conn) {
         if ($stmt->execute()) {
             echo "
 
-Data saved to database successfully!";
+        Data saved to database successfully!";
             unset($_SESSION['form_data']);
         } else {
             echo "
 
-Error saving data: " . $stmt->error . "";
+        Error saving data: " . $stmt->error . "";
         }
 
         $stmt->close();

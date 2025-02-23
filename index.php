@@ -8,8 +8,6 @@ $page = $_GET['page'] ?? 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['form_data'] = $_POST;
-    header("Location: output.php");
-    exit;
 
     $errors = validate_form_data($_POST);
 
