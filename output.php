@@ -1,278 +1,11 @@
 <?php
 session_start();
-
 include 'db_connector.php';
-
-// Database Insertion
-if ($conn) {
-
-    $sql = "INSERT INTO personal_data (last_name, first_name, middle_name, flast, ffirst, fmiddle, mlast, mfirst, mmiddle, dob, gender, civil_status, otherStatus, nationality, religion, tin, unit, blk, street, subdivision, barangay, city, province, country, zip, unit2, blk2, street2, subdivision2, barangay2, city2, province2, country2, zip2, phone, tele, email, age) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    $stmt = $conn->prepare($sql);
-
-    if ($stmt) {
-        if (isset($_SESSION['form_data']['last_name'])) {
-            $last_name = htmlspecialchars($_SESSION['form_data']['last_name']);
-        } else {
-            $last_name = '';
-        }
-        if (isset($_SESSION['form_data']['first_name'])) {
-            $first_name = htmlspecialchars($_SESSION['form_data']['first_name']);
-        } else {
-            $first_name = '';
-        }
-        if (isset($_SESSION['form_data']['middle_name'])) {
-            $middle_name = htmlspecialchars($_SESSION['form_data']['middle_name']);
-        } else {
-            $middle_name = '';
-        }
-        if (isset($_SESSION['form_data']['flast'])) {
-            $flast = htmlspecialchars($_SESSION['form_data']['flast']);
-        } else {
-            $flast = '';
-        }
-        if (isset($_SESSION['form_data']['ffirst'])) {
-            $ffirst = htmlspecialchars($_SESSION['form_data']['ffirst']);
-        } else {
-            $ffirst = '';
-        }
-        if (isset($_SESSION['form_data']['fmiddle'])) {
-            $fmiddle = htmlspecialchars($_SESSION['form_data']['fmiddle']);
-        } else {
-            $fmiddle = '';
-        }
-        if (isset($_SESSION['form_data']['mlast'])) {
-            $mlast = htmlspecialchars($_SESSION['form_data']['mlast']);
-        } else {
-            $mlast = '';
-        }
-        if (isset($_SESSION['form_data']['mfirst'])) {
-            $mfirst = htmlspecialchars($_SESSION['form_data']['mfirst']);
-        } else {
-            $mfirst = '';
-        }
-        if (isset($_SESSION['form_data']['mmiddle'])) {
-            $mmiddle = htmlspecialchars($_SESSION['form_data']['mmiddle']);
-        } else {
-            $mmiddle = '';
-        }
-        if (isset($_SESSION['form_data']['dob'])) {
-            $dob = htmlspecialchars($_SESSION['form_data']['dob']);
-        } else {
-            $dob = '';
-        }
-        if (isset($_SESSION['form_data']['gender'])) {
-            $gender = htmlspecialchars($_SESSION['form_data']['gender']);
-        } else {
-            $gender = '';
-        }
-        if (isset($_SESSION['form_data']['civil_status'])) {
-            $civil_status = htmlspecialchars($_SESSION['form_data']['civil_status']);
-        } else {
-            $civil_status = '';
-        }
-        if (isset($_SESSION['form_data']['otherStatus'])) {
-            $otherStatus = htmlspecialchars($_SESSION['form_data']['otherStatus']);
-        } else {
-            $otherStatus = '';
-        }
-        if (isset($_SESSION['form_data']['nationality'])) {
-            $nationality = htmlspecialchars($_SESSION['form_data']['nationality']);
-        } else {
-            $nationality = '';
-        }
-        if (isset($_SESSION['form_data']['religion'])) {
-            $religion = htmlspecialchars($_SESSION['form_data']['religion']);
-        } else {
-            $religion = '';
-        }
-        if (isset($_SESSION['form_data']['tin'])) {
-            $tin = htmlspecialchars($_SESSION['form_data']['tin']);
-        } else {
-            $tin = '';
-        }
-        if (isset($_SESSION['form_data']['unit'])) {
-            $unit = htmlspecialchars($_SESSION['form_data']['unit']);
-        } else {
-            $unit = '';
-        }
-        if (isset($_SESSION['form_data']['blk'])) {
-            $blk = htmlspecialchars($_SESSION['form_data']['blk']);
-        } else {
-            $blk = '';
-        }
-        if (isset($_SESSION['form_data']['street'])) {
-            $street = htmlspecialchars($_SESSION['form_data']['street']);
-        } else {
-            $street = '';
-        }
-        if (isset($_SESSION['form_data']['subdivision'])) {
-            $subdivision = htmlspecialchars($_SESSION['form_data']['subdivision']);
-        } else {
-            $subdivision = '';
-        }
-        if (isset($_SESSION['form_data']['brgy'])) {
-            $brgy = htmlspecialchars($_SESSION['form_data']['brgy']);
-        } else {
-            $brgy = '';
-        }
-        if (isset($_SESSION['form_data']['city'])) {
-            $city = htmlspecialchars($_SESSION['form_data']['city']);
-        } else {
-            $city = '';
-        }
-        if (isset($_SESSION['form_data']['province'])) {
-            $province = htmlspecialchars($_SESSION['form_data']['province']);
-        } else {
-            $province = '';
-        }
-        if (isset($_SESSION['form_data']['country'])) {
-            $country = htmlspecialchars($_SESSION['form_data']['country']);
-        } else {
-            $country = '';
-        }
-        if (isset($_SESSION['form_data']['zip'])) {
-            $zip = htmlspecialchars($_SESSION['form_data']['zip']);
-        } else {
-            $zip = '';
-        }
-        if (isset($_SESSION['form_data']['unit2'])) {
-            $unit2 = htmlspecialchars($_SESSION['form_data']['unit2']);
-        } else {
-            $unit2 = '';
-        }
-        if (isset($_SESSION['form_data']['blk2'])) {
-            $blk2 = htmlspecialchars($_SESSION['form_data']['blk2']);
-        } else {
-            $blk2 = '';
-        }
-        if (isset($_SESSION['form_data']['street2'])) {
-            $street2 = htmlspecialchars($_SESSION['form_data']['street2']);
-        } else {
-            $street2 = '';
-        }
-        if (isset($_SESSION['form_data']['subdivision2'])) {
-            $subdivision2 = htmlspecialchars($_SESSION['form_data']['subdivision2']);
-        } else {
-            $subdivision2 = '';
-        }
-        if (isset($_SESSION['form_data']['barangay2'])) {
-            $barangay2 = htmlspecialchars($_SESSION['form_data']['barangay2']);
-        } else {
-            $barangay2 = '';
-        }
-        if (isset($_SESSION['form_data']['city2'])) {
-            $city2 = htmlspecialchars($_SESSION['form_data']['city2']);
-        } else {
-            $city2 = '';
-        }
-        if (isset($_SESSION['form_data']['province2'])) {
-            $province2 = htmlspecialchars($_SESSION['form_data']['province2']);
-        } else {
-            $province2 = '';
-        }
-        if (isset($_SESSION['form_data']['country2'])) {
-            $country2 = htmlspecialchars($_SESSION['form_data']['country2']);
-        } else {
-            $country2 = '';
-        }
-        if (isset($_SESSION['form_data']['zip2'])) {
-            $zip2 = htmlspecialchars($_SESSION['form_data']['zip2']);
-        } else {
-            $zip2 = '';
-        }
-        if (isset($_SESSION['form_data']['phone'])) {
-            $phone = htmlspecialchars($_SESSION['form_data']['phone']);
-        } else {
-            $phone = '';
-        }
-        if (isset($_SESSION['form_data']['tele'])) {
-            $tele = htmlspecialchars($_SESSION['form_data']['tele']);
-        } else {
-            $tele = '';
-        }
-        if (isset($_SESSION['form_data']['email'])) {
-            $email = htmlspecialchars($_SESSION['form_data']['email']);
-        } else {
-            $email = '';
-        }
-        if (isset($_SESSION['form_data']['age'])) {
-            $age = htmlspecialchars($_SESSION['form_data']['age']);
-        } else {
-            $age = '';
-        }
-
-        $stmt->bind_param(
-            "sssssssssssssssissssssssissssssssiiisi",
-            $last_name,
-            $first_name,
-            $middle_name,
-            $flast,
-            $ffirst,
-            $fmiddle,
-            $mlast,
-            $mfirst,
-            $mmiddle,
-            $dob,
-            $gender,
-            $civil_status,
-            $otherStatus,
-            $nationality,
-            $religion,
-            $tin,
-            $unit,
-            $blk,
-            $street,
-            $subdivision,
-            $brgy,
-            $city,
-            $province,
-            $country,
-            $zip,
-            $unit2,
-            $blk2,
-            $street2,
-            $subdivision2,
-            $barangay2,
-            $city2,
-            $province2,
-            $country2,
-            $zip2,
-            $phone,
-            $tele,
-            $email,
-            $age
-        );
-
-        if ($stmt->execute()) {
-            echo "
-
-        Data saved to database successfully!";
-            unset($_SESSION['form_data']);
-        } else {
-            echo "
-
-        Error saving data: " . $stmt->error . "";
-        }
-
-        $stmt->close();
-    } else {
-        echo "
-
-Error preparing statement: " . $conn->error . "";
-    }
-} else {
-    echo "
-
-No form data found in session.";
-}
-$conn->close();
-
-
 
 // Function to calculate age
 function calculateAge($dob)
 {
+    if (!$dob) return '';
     $birthDate = new DateTime($dob);
     $today = new DateTime();
     return $today->diff($birthDate)->y;
@@ -283,61 +16,61 @@ $last_name = $first_name = $middle_name = $dob = $gender = $civil_status = $nati
     $subdivision = $barangay = $city = $province = $country = $country2 = $zip = $zip2 = $unit2 = $blk2 =
     $street2 = $subdivision2 = $barangay2 = $city2 = $province2 = $tele = $otherStatus = $age = $status_display = '';
 
-// Checks if form data exists in the session
-if (isset($_SESSION['form_data'])) {
-    $formData = $_SESSION['form_data'];
+$sql = "SELECT * FROM personal_data ORDER BY id DESC LIMIT 1";
+$result = $conn->query($sql);
 
-    // Simplified loop to extract and sanitize form data
-    $fields = [
-        'last_name',
-        'first_name',
-        'middle_name',
-        'dob',
-        'gender',
-        'civil_status',
-        'other_stat',
-        'nationality',
-        'religion',
-        'tin',
-        'unit',
-        'blk',
-        'street',
-        'subdivision',
-        'brgy',
-        'city',
-        'province',
-        'country',
-        'zip',
-        'h_unit',
-        'h_blk',
-        'h_street',
-        'h_subdivision',
-        'h_brgy',
-        'h_city',
-        'h_province',
-        'h_country',
-        'h_zip',
-        'phone',
-        'tele',
-        'email',
-        'age'
-    ];
+if ($result && $result->num_rows > 0) {
+    $row = $result->fetch_assoc();
 
+    // Assign DB values
+    $last_name   = htmlspecialchars($row['last_name']);
+    $first_name  = htmlspecialchars($row['first_name']);
+    $middle_name = htmlspecialchars($row['middle_name']);
+    $flast       = htmlspecialchars($row['flast']);
+    $ffirst      = htmlspecialchars($row['ffirst']);
+    $fmiddle     = htmlspecialchars($row['fmiddle']);
+    $mlast       = htmlspecialchars($row['mlast']);
+    $mfirst      = htmlspecialchars($row['mfirst']);
+    $mmiddle     = htmlspecialchars($row['mmiddle']);
+    $dob         = htmlspecialchars($row['dob']);
+    $gender      = htmlspecialchars($row['gender']);
+    $civil_status = htmlspecialchars($row['civil_status']);
+    $otherStatus  = htmlspecialchars($row['otherStatus']);
+    $nationality  = htmlspecialchars($row['nationality']);
+    $religion     = htmlspecialchars($row['religion']);
+    $tin          = htmlspecialchars($row['tin']);
+    $unit         = htmlspecialchars($row['unit']);
+    $blk          = htmlspecialchars($row['blk']);
+    $street       = htmlspecialchars($row['street']);
+    $subdivision  = htmlspecialchars($row['subdivision']);
+    $barangay     = htmlspecialchars($row['barangay']);
+    $city         = htmlspecialchars($row['city']);
+    $province     = htmlspecialchars($row['province']);
+    $country      = htmlspecialchars($row['country']);
+    $zip          = htmlspecialchars($row['zip']);
+    $unit2        = htmlspecialchars($row['unit2']);
+    $blk2         = htmlspecialchars($row['blk2']);
+    $street2      = htmlspecialchars($row['street2']);
+    $subdivision2 = htmlspecialchars($row['subdivision2']);
+    $barangay2    = htmlspecialchars($row['barangay2']);
+    $city2        = htmlspecialchars($row['city2']);
+    $province2    = htmlspecialchars($row['province2']);
+    $country2     = htmlspecialchars($row['country2']);
+    $zip2         = htmlspecialchars($row['zip2']);
+    $phone        = htmlspecialchars($row['phone']);
+    $tele         = htmlspecialchars($row['tele']);
+    $email        = htmlspecialchars($row['email']);
+    $age          = calculateAge($dob);
 
-    foreach ($fields as $field) {
-        $$field = htmlspecialchars($formData[$field] ?? '');
-    }
-
-    // Calculate age
-    $age = calculateAge($dob);
-    $dob = date("Y-m-d", strtotime($dob));
-
-    // Determine civil status display
-    $status_display = ($civil_status === 'Others' && !empty($otherStatus)) ? htmlspecialchars($otherStatus) : htmlspecialchars($civil_status);
+    // Status display logic
+    $status_display = ($civil_status === 'Others' && !empty($otherStatus)) ? $otherStatus : $civil_status;
+} else {
+    echo "⚠️ No data found in database.";
+    exit;
 }
 
+$conn->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -405,33 +138,23 @@ if (isset($_SESSION['form_data'])) {
             <h3>Place of Birth</h3>
             <div class="container-group">
                 <div class="container-4">
-                    <div class="separator">
-                        <label>Country</label>
-                        <p><span class="o_country"><?php echo $country; ?></span></p>
-                    </div>
-                    <div class="separator">
-                        <label>Province</label>
-                        <p><span class="o_province"><?php echo $province; ?></span></p>
-                    </div>
-                    <div class="separator">
-                        <label>City/Municipality</label>
-                        <p><span class="o_city"><?php echo $city; ?></span></p>
-                    </div>
-                    <div class="separator">
-                        <label>Zip Code</label>
-                        <p><span class="o_zip"><?php echo $zip; ?></span></p>
-                    </div>
-                    <div class="separator">
-                        <label>Barangay/District/Locality</label>
-                        <p><span class="o_barangay"><?php echo $barangay; ?></span></p>
-                    </div>
-                    <label>Street Name</label>
+                    <label>Country</label>
+                    <p><span class="o_country"><?php echo $country; ?></span></p>
+                    <label>Province</label>
+                    <p><span class="o_province"><?php echo $province; ?></span></p>
+                    <label>City/Municipality</label>
+                    <p><span class="o_city"><?php echo $city; ?></span></p>
+                    <label>Zip Code</label>
+                    <p><span class="o_zip"><?php echo $zip; ?></span></p>
+                    <label>Barangay</label>
+                    <p><span class="o_barangay"><?php echo $barangay; ?></span></p>
+                    <label>Street</label>
                     <p><span class="o_street"><?php echo $street; ?></span></p>
                     <label>Subdivision</label>
                     <p><span class="o_subdivision"><?php echo $subdivision; ?></span></p>
                     <label>House/Lot & Blk. No.</label>
                     <p><span class="o_blk"><?php echo $blk; ?></span></p>
-                    <label>RM/FLR/Unit No. & Bldg. Name</label>
+                    <label>Unit/Building</label>
                     <p><span class="o_unit"><?php echo $unit; ?></span></p>
                 </div>
             </div>
@@ -449,15 +172,15 @@ if (isset($_SESSION['form_data'])) {
                     <p><span class="o_city1"><?php echo $city2; ?></span></p>
                     <label>Zip Code</label>
                     <p><span class="o_zip1"><?php echo $zip2; ?></span></p>
-                    <label>Barangay/District/Locality</label>
+                    <label>Barangay</label>
                     <p><span class="o_barangay1"><?php echo $barangay2; ?></span></p>
-                    <label>Street Name</label>
+                    <label>Street</label>
                     <p><span class="o_street1"><?php echo $street2; ?></span></p>
                     <label>Subdivision</label>
                     <p><span class="o_subdivision1"><?php echo $subdivision2; ?></span></p>
-                    <label>House/Lot & Blk. No.</label>
+                    <label>Blk. No.</label>
                     <p><span class="o_blk1"><?php echo $blk2; ?></span></p>
-                    <label>RM/FLR/Unit No. & Bldg. Name</label>
+                    <label>Unit/Building</label>
                     <p><span class="o_unit1"><?php echo $unit2; ?></span></p>
                 </div>
             </div>
@@ -476,5 +199,4 @@ if (isset($_SESSION['form_data'])) {
         </div>
     </section>
 </body>
-
 </html>
